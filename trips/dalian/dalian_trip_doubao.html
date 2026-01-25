@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大连4天3晚·小红书高颜版（看海+咖啡+美食）</title>
+    <!-- Leaflet地图依赖 -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        :root {
+            --primary: #FF2E4D; /* 小红书红 */
+            --day1: #FF2E4D;
+            --day2: #FF9800;
+            --day3: #2196F3;
+            --day4: #9C27B0;
+            --bg: #FAFAFA;
+            --card-bg: #FFFFFF;
+            --text-main: #333;
+            --text-light: #666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 30px;
+        }
+
+        /* 顶部标题栏 */
+        .header {
+            background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+            padding: 50px 20px 30px;
+            text-align: center;
+            color: white;
+            border-radius: 0 0 24px 24px;
+            box-shadow: 0 10px 20px rgba(253, 160, 133, 0.3);
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-weight: 500;
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        /* 内容容器 */
+        .container {
+            padding: 20px;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        /* 天数徽章 */
+        .day-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 10px rgba(255, 46, 77, 0.3);
+        }
+
+        .day-title {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-left: 8px;
+            font-weight: 500;
+        }
+
+        /* 时间轴样式 */
+        .timeline-item {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 24px;
+            border-left: 2px solid #EEE;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+            border-left: 2px solid transparent;
+        }
+
+        .timeline-icon {
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+        }
+
+        .location-title {
+            font-weight: 700;
+            font-size: 17px;
+            margin-top: -4px;
+            margin-bottom: 6px;
+            color: #222;
+        }
+
+        .location-desc {
+            font-size: 14px;
+            color: var(--text-light);
+            text-align: justify;
+        }
+
+        /* 标签样式 */
+        .tags {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .tag.photo {
+            background: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .tag.food {
+            background: #FFF3E0;
+            color: #F57C00;
+        }
+
+        .tag.relax {
+            background: #E8F5E9;
+            color: #388E3C;
+        }
+
+        .tag.hotel {
+            background: #FCE4EC;
+            color: #C2185B;
+        }
+
+        /* 贴士卡片 */
+        .tip-card {
+            background: #F0F4F8;
+            border: none;
+        }
+
+        .tip-title {
+            font-weight: 700;
+            color: #444;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 表格样式（咖啡/餐厅） */
+        .table-card {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            background: #f8f9fa;
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+            color: #444;
+        }
+
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #eee;
+            color: #555;
+        }
+
+        /* 地图样式 */
+        #map {
+            height: 450px;
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        /* 自定义地图标记 */
+        .custom-marker {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .marker-day1 { background-color: var(--day1); }
+        .marker-day2 { background-color: var(--day2); }
+        .marker-day3 { background-color: var(--day3); }
+        .marker-day4 { background-color: var(--day4); }
+
+        /* 地图图例 */
+        .map-legend {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        /* 适配手机 */
+        @media (max-width: 480px) {
+            #map {
+                height: 350px;
+            }
+            .header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部标题栏 -->
+    <div class="header">
+        <h1>✨大连4天3晚✨</h1>
+        <p>看海 · 咖啡 · 美食 · 汤泉 | 小红书高颜版</p>
+    </div>
+
+    <!-- 核心内容 -->
+    <div class="container">
+        <!-- Day 1 抵达&汤泉 -->
+        <div class="card">
+            <div>
+                <span class="day-badge">Day 1</span>
+                <span class="day-title">周四 · 抵达 & 治愈泡汤</span>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🚄 中午：抵达大连北站</div>
+                <div class="location-desc">打车约20分钟前往汤泉酒店，中山区核心区交通便利。</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🛀 下午：港东5号汤泉 / 蔷萝花潭温泉</div>
+                <div class="tags">
+                    <span class="tag relax">治愈泡汤</span>
+                    <span class="tag photo">海景/竹林私汤</span>
+                    <span class="tag hotel">免费过夜</span>
+                </div>
+                <div class="location-desc">
+                    <p><strong>港东5号汤泉（推荐）：</strong> 一线海景高空泡池，人均63元起，性价比高，拍照出片。</p>
+                    <p><strong>蔷萝花潭温泉：</strong> 小红书网红竹林私汤，人均64元/24h，艺术馆风格，氛围感拉满。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 2 中山区看海+咖啡 -->
+        <div class="card">
+            <div>
+                <span class="day-badge">Day 2</span>
+                <span class="day-title">周五 · 中山区看海 + 网红咖啡</span>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🏨 上午：入住大连洲际酒店</div>
+                <div class="location-desc">中山区核心位置，步行可达东港/威尼斯水城，去哪都方便。</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🍤 午餐：海味当家（东港店）</div>
+                <div class="tags"><span class="tag food">海鲜蒸汽锅</span><span class="tag photo">明档活鲜</span></div>
+                <div class="location-desc">人均120元，蒸汽海鲜保留原汁原味，锅底粥超好喝，明档选鲜，拍照有烟火气。</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">☕ 下午：C27空间 + 15库艺术园 + 渔人码头</div>
+                <div class="tags"><span class="tag photo">落地窗看海</span><span class="tag relax">咖啡下午茶</span></div>
+                <div class="location-desc">
+                    <strong>C27空间</strong>（人均30元）：东港天际线落地窗，下午4点光线最佳；<br>
+                    <strong>15库艺术园</strong>：文艺打卡地；<br>
+                    <strong>渔人码头</strong>：彩色房子+渔船，电影感大片，顺路打卡caanbyour（人均60元）。
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🌃 晚上：东港威尼斯水城 + A1kk·coffee</div>
+                <div class="tags"><span class="tag photo">欧式夜景</span><span class="tag relax">贡多拉游船</span></div>
+                <div class="location-desc">威尼斯水城夜景绝美，A1kk·coffee（人均42元）窗边看游船，焦糖美罗拿铁必点。</div>
+            </div>
+        </div>
+
+        <!-- Day 3 星海+海鲜烧烤 -->
+        <div class="card">
+            <div>
+                <span class="day-badge">Day 3</span>
+                <span class="day-title">周六 · 星海广场 + 海鲜烧烤</span>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🕊️ 上午：星海广场 + 跨海大桥</div>
+                <div class="tags"><span class="tag photo">喂海鸥</span><span class="tag relax">城市地标</span></div>
+                <div class="location-desc">打卡大连地标，喂海鸥拍跨海大桥全景，推荐飞向海边（半山书咖）人均50元，阳台躺椅看大桥。</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🥟 午餐：喜鼎海胆水饺（东港店）</div>
+                <div class="tags"><span class="tag food">必吃榜</span><span class="tag photo">靠窗看海</span></div>
+                <div class="location-desc">人均150元，原汁海胆水饺+奇妙虾球，提前1天预约窗边位，拍照超美。</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🌉 下午：棒棰岛风景区</div>
+                <div class="tags"><span class="tag photo">白沙滩</span><span class="tag relax">滨海木栈道</span></div>
+                <div class="location-desc">门票20元，白沙滩+毛主席题字碑，人少景美，适合拍海边大片。</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🦞 晚餐：正黄旗海鲜烧烤（八一路店）</div>
+                <div class="tags"><span class="tag food">大排档</span><span class="tag relax">烟火气</span></div>
+                <div class="location-desc">人均90元，烤鲍鱼+烤海肠+铁板杂瓣鱼，大连本地烧烤氛围，海鲜新鲜不踩雷。</div>
+            </div>
+        </div>
+
+        <!-- Day 4 咖啡+返程 -->
+        <div class="card">
+            <div>
+                <span class="day-badge">Day 4</span>
+                <span class="day-title">周日 · 南山咖啡 + 返程</span>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">☕ 上午：胡萝卜咖啡CARROT COFFEE</div>
+                <div class="tags"><span class="tag photo">白色工业风</span><span class="tag relax">明星同款</span></div>
+                <div class="location-desc">人均45元，南山路网红咖啡，白色工业风+露营椅，卡梅罗拿铁必点，浅色系穿搭更出片。</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🛍️ 上午：购买伴手礼</div>
+                <div class="location-desc">远洋牌烤鱼片/鱿鱼丝，大连本地老字号，适合带给家人朋友。</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">👋 下午：返程大连北站</div>
+                <div class="location-desc">根据高铁时间出发，结束轻松惬意的大连之旅。</div>
+            </div>
+        </div>
+
+        <!-- 小红书顶流咖啡厅 -->
+        <div class="card">
+            <h3 style="margin-bottom:12px; color:#444;">☕ 小红书顶流咖啡厅清单</h3>
+            <div class="table-card">
+                <table>
+                    <tr>
+                        <th>名称</th>
+                        <th>地址</th>
+                        <th>人均</th>
+                        <th>招牌</th>
+                        <th>出片点</th>
+                    </tr>
+                    <tr>
+                        <td>胡萝卜咖啡</td>
+                        <td>中山区南山路169号</td>
+                        <td>45元</td>
+                        <td>卡梅罗、燕麦拿铁</td>
+                        <td>白色工业风、露营椅</td>
+                    </tr>
+                    <tr>
+                        <td>C27空间</td>
+                        <td>中山区海之韵路115号3层</td>
+                        <td>30元</td>
+                        <td>美式、桂花拿铁</td>
+                        <td>落地窗看东港天际线</td>
+                    </tr>
+                    <tr>
+                        <td>飞向海边</td>
+                        <td>西岗区滨海西路137号</td>
+                        <td>50元</td>
+                        <td>手冲、桂花酒酿拿铁</td>
+                        <td>阳台躺椅看跨海大桥</td>
+                    </tr>
+                    <tr>
+                        <td>caanbyour</td>
+                        <td>中山区滨海东路200号</td>
+                        <td>60元</td>
+                        <td>澳白、海盐焦糖蛋糕</td>
+                        <td>沙滩+落地窗夕阳</td>
+                    </tr>
+                    <tr>
+                        <td>A1kk·coffee</td>
+                        <td>中山区东港威尼斯水城</td>
+                        <td>42元</td>
+                        <td>焦糖美罗拿铁、巴斯克</td>
+                        <td>窗边看贡多拉游船</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 必吃美食清单 -->
+        <div class="card">
+            <h3 style="margin-bottom:12px; color:#444;">🍤 大连必吃美食清单</h3>
+            <div class="table-card">
+                <table>
+                    <tr>
+                        <th>名称</th>
+                        <th>地址</th>
+                        <th>人均</th>
+                        <th>招牌菜</th>
+                        <th>贴士</th>
+                    </tr>
+                    <tr>
+                        <td>海味当家</td>
+                        <td>中山区东港商务区</td>
+                        <td>120元</td>
+                        <td>海鲜蒸汽锅、锅底粥</td>
+                        <td>点套餐更划算</td>
+                    </tr>
+                    <tr>
+                        <td>喜鼎海胆水饺</td>
+                        <td>中山区港浦路94号</td>
+                        <td>150元</td>
+                        <td>海胆水饺、奇妙虾球</td>
+                        <td>提前1天预约窗边位</td>
+                    </tr>
+                    <tr>
+                        <td>正黄旗烧烤</td>
+                        <td>西岗区八一路</td>
+                        <td>90元</td>
+                        <td>烤鲍鱼、烤海肠</td>
+                        <td>烤海肠选厚皮款</td>
+                    </tr>
+                    <tr>
+                        <td>品海楼</td>
+                        <td>中山区滨海东路72号</td>
+                        <td>150元</td>
+                        <td>海胆豆腐、三鲜焖子</td>
+                        <td>晚上7点有驻唱</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 避坑贴士 -->
+        <div class="card tip-card">
+            <div class="tip-title">💡 小红书避坑核心贴士</div>
+            <div style="font-size: 14px; color: #555;">
+                <p><strong>👗 穿搭：</strong> 浅色系（白/蓝/杏）长裙/休闲装，海边风大带薄外套，平底鞋方便逛。</p>
+                <p><strong>🚗 交通：</strong> 大连打车起步价10元，中山区内步行/打车，跨区20-40元，不建议赶时间坐公交。</p>
+                <p><strong>🍤 海鲜避坑：</strong> 只选明档活鲜店，蒸/煮做法最鲜，拒绝路边低价拉客海鲜店。</p>
+                <p><strong>📸 拍照：</strong> 17:00-18:00日落逆光拍，醒图「胶片」滤镜+15，亮度+5，对比度+3。</p>
+                <p><strong>♨️ 汤泉避坑：</strong> 港东5号汤泉周四错峰去，自带浴衣更出片；蔷萝花潭电梯慢，提前规划时间。</p>
+            </div>
+        </div>
+
+        <!-- Leaflet交互式地图 -->
+        <div id="map"></div>
+
+        <!-- 地图初始化脚本 -->
+        <script>
+            // 初始化地图，中心点定位大连中山区
+            var map = L.map('map').setView([38.92, 121.62], 12);
+
+            // 加载OpenStreetMap地图图层
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            // 所有点位数据（按天数分色）
+            var locations = [
+                // Day 1 红色
+                { name: "大连北站", coords: [39.022, 121.635], day: "Day 1", desc: "抵达大连", colorClass: "marker-day1", label: "D1" },
+                { name: "港东5号汤泉", coords: [38.918, 121.670], day: "Day 1", desc: "海景高空泡池", colorClass: "marker-day1", label: "D1" },
+                { name: "蔷萝花潭温泉", coords: [38.960, 121.520], day: "Day 1", desc: "竹林私汤", colorClass: "marker-day1", label: "D1" },
+                
+                // Day 2 橙色
+                { name: "大连洲际酒店", coords: [38.921, 121.639], day: "Day 2", desc: "中山区核心位置", colorClass: "marker-day2", label: "D2" },
+                { name: "海味当家(东港店)", coords: [38.925, 121.672], day: "Day 2", desc: "海鲜蒸汽锅", colorClass: "marker-day2", label: "D2" },
+                { name: "C27空间", coords: [38.930, 121.680], day: "Day 2", desc: "落地窗看海咖啡", colorClass: "marker-day2", label: "D2" },
+                { name: "15库艺术园", coords: [38.915, 121.660], day: "Day 2", desc: "文艺打卡地", colorClass: "marker-day2", label: "D2" },
+                { name: "渔人码头", coords: [38.875, 121.685], day: "Day 2", desc: "彩色房子+渔船", colorClass: "marker-day2", label: "D2" },
+                { name: "caanbyour", coords: [38.870, 121.660], day: "Day 2", desc: "琥珀湾咖啡", colorClass: "marker-day2", label: "D2" },
+                { name: "东港威尼斯水城", coords: [38.922, 121.667], day: "Day 2", desc: "欧式夜景", colorClass: "marker-day2", label: "D2" },
+                { name: "A1kk·coffee", coords: [38.923, 121.668], day: "Day 2", desc: "威尼斯水城咖啡", colorClass: "marker-day2", label: "D2" },
+                
+                // Day 3 蓝色
+                { name: "星海广场", coords: [38.881, 121.583], day: "Day 3", desc: "喂海鸥+跨海大桥", colorClass: "marker-day3", label: "D3" },
+                { name: "飞向海边(半山书咖)", coords: [38.880, 121.590], day: "Day 3", desc: "看大桥咖啡", colorClass: "marker-day3", label: "D3" },
+                { name: "喜鼎海胆水饺(东港店)", coords: [38.924, 121.671], day: "Day 3", desc: "海胆水饺必吃", colorClass: "marker-day3", label: "D3" },
+                { name: "棒棰岛", coords: [38.865, 121.700], day: "Day 3", desc: "白沙滩+木栈道", colorClass: "marker-day3", label: "D3" },
+                { name: "正黄旗海鲜烧烤(八一路店)", coords: [38.910, 121.620], day: "Day 3", desc: "海鲜烧烤大排档", colorClass: "marker-day3", label: "D3" },
+                
+                // Day 4 紫色
+                { name: "胡萝卜咖啡", coords: [38.915, 121.645], day: "Day 4", desc: "南山路网红咖啡", colorClass: "marker-day4", label: "D4" },
+                { name: "南山风情街", coords: [38.916, 121.646], day: "Day 4", desc: "日式老洋房", colorClass: "marker-day4", label: "D4" }
+            ];
+
+            // 添加所有点位标记
+            locations.forEach(function (loc) {
+                // 自定义标记样式
+                var icon = L.divIcon({
+                    className: 'custom-marker ' + loc.colorClass,
+                    html: loc.label,
+                    iconSize: [24, 24],
+                    iconAnchor: [12, 12]
+                });
+
+                // 添加标记并绑定弹窗
+                L.marker(loc.coords, { icon: icon }).addTo(map)
+                    .bindPopup("<b>" + loc.name + "</b><br>" + loc.day + ": " + loc.desc);
+            });
+
+            // 添加地图图例（右下角）
+            var legend = L.control({ position: 'bottomright' });
+            legend.onAdd = function (map) {
+                var div = L.DomUtil.create('div', 'map-legend');
+                div.innerHTML += '<div class="legend-item"><div class="legend-color" style="background:var(--day1)"></div>Day 1 抵达&汤泉</div>';
+                div.innerHTML += '<div class="legend-item"><div class="legend-color" style="background:var(--day2)"></div>Day 2 中山区看海</div>';
+                div.innerHTML += '<div class="legend-item"><div class="legend-color" style="background:var(--day3)"></div>Day 3 星海+海鲜</div>';
+                div.innerHTML += '<div class="legend-item"><div class="legend-color" style="background:var(--day4)"></div>Day 4 咖啡+返程</div>';
+                return div;
+            };
+            legend.addTo(map);
+        </script>
+
+        <!-- 底部署名 -->
+        <div style="text-align:center; margin-top:15px; font-size:12px; color:#999;">
+            Made for Xiaohongshu Lovers ❤️ 大连旅行攻略
+        </div>
+    </div>
+</body>
+</html>

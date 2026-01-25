@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YG Travel - 探索世界的每一个角落</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <span class="logo-icon">✈️</span>
+                <span class="logo-text">YG Travel</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">首页</a></li>
+                <li><a href="#trips" class="nav-link">旅行计划</a></li>
+                <li><a href="#about" class="nav-link">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-background">
+            <div class="gradient-overlay"></div>
+            <div class="animated-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+            </div>
+        </div>
+        <div class="container hero-content">
+            <h1 class="hero-title">
+                <span class="title-line">探索世界</span>
+                <span class="title-line highlight">享受旅程</span>
+            </h1>
+            <p class="hero-subtitle">用心规划每一次旅行，记录生活中的美好瞬间</p>
+            <div class="hero-buttons">
+                <a href="./trips/index.html" class="btn btn-primary">
+                    <span>开始探索</span>
+                    <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+                <a href="#about" class="btn btn-secondary">了解更多</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <span>向下滚动</span>
+        </div>
+    </section>
+
+    <!-- Trips Section -->
+    <section class="trips-section" id="trips">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">精选旅行</h2>
+                <p class="section-subtitle">精心策划的旅行路线，带你发现城市之美</p>
+            </div>
+
+            <div class="trips-grid">
+                <!-- Dalian Trip Card -->
+                <div class="trip-card">
+                    <div class="trip-card-image">
+                        <div class="trip-badge">热门</div>
+                        <div class="trip-overlay"></div>
+                    </div>
+                    <div class="trip-card-content">
+                        <div class="trip-meta">
+                            <span class="trip-duration">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M8 14A6 6 0 108 2a6 6 0 000 12z" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M8 4v4l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                                4天3晚
+                            </span>
+                            <span class="trip-type">城市漫游</span>
+                        </div>
+                        <h3 class="trip-title">大连 · 海滨之城</h3>
+                        <p class="trip-description">小红书特种兵高颜休闲版 · 温泉 + 海景 + 美食的完美结合</p>
+                        <div class="trip-highlights">
+                            <span class="highlight-tag">🏖️ 绝美海景</span>
+                            <span class="highlight-tag">♨️ 高颜值汤泉</span>
+                            <span class="highlight-tag">🍜 地道美食</span>
+                        </div>
+                        <a href="./trips/index.html" class="trip-link">
+                            查看详情
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Coming Soon Card -->
+                <div class="trip-card coming-soon">
+                    <div class="trip-card-image">
+                        <div class="trip-overlay"></div>
+                    </div>
+                    <div class="trip-card-content">
+                        <div class="coming-soon-icon">🚀</div>
+                        <h3 class="trip-title">更多城市</h3>
+                        <p class="trip-description">正在规划中，敬请期待...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">关于 YG Travel</h2>
+                    <p class="about-paragraph">
+                        我们相信，每一次旅行都是一次全新的探索。YG Travel 致力于为你提供精心策划的旅行路线，
+                        让你能够更好地体验每个城市的独特魅力。
+                    </p>
+                    <p class="about-paragraph">
+                        从网红打卡地到小众景点，从地道美食到特色住宿，我们用心记录每一个细节，
+                        帮助你规划一次完美的旅程。
+                    </p>
+                    <div class="about-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">📍</div>
+                            <div class="feature-text">
+                                <h4>精准路线</h4>
+                                <p>优化行程安排</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">📸</div>
+                            <div class="feature-text">
+                                <h4>打卡推荐</h4>
+                                <p>网红景点不错过</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🍽️</div>
+                            <div class="feature-text">
+                                <h4>美食指南</h4>
+                                <p>品尝地道风味</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="image-placeholder">
+                        <div class="placeholder-icon">🌍</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-icon">✈️</span>
+                        <span class="logo-text">YG Travel</span>
+                    </div>
+                    <p class="footer-description">探索世界，享受旅程</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>快速链接</h4>
+                        <ul>
+                            <li><a href="#home">首页</a></li>
+                            <li><a href="./trips/index.html">旅行计划</a></li>
+                            <li><a href="#about">关于</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>联系方式</h4>
+                        <ul>
+                            <li><a href="https://github.com/yibinpro" target="_blank">GitHub</a></li>
+                            <li><a href="mailto:contact@example.com">Email</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 YG Travel. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./js/main.js"></script>
+</body>
+
+</html>

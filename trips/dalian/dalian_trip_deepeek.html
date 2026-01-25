@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大连4天3晚 | 小红书特种兵旅行计划</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        :root {
+            --primary: #FF2E4D;
+            --secondary: #333;
+            --bg: #FAFAFA;
+            --card-bg: #FFFFFF;
+            --text-main: #333;
+            --text-light: #666;
+            --accent: #FFB3C1;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-image: linear-gradient(135deg, #1e88e5 0%, #4fc3f7 100%);
+            padding: 50px 20px 30px;
+            text-align: center;
+            color: white;
+            border-radius: 0 0 24px 24px;
+            box-shadow: 0 10px 20px rgba(30, 136, 229, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            margin: 10px 0 0;
+            font-weight: 500;
+            font-size: 14px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 10px rgba(255, 46, 77, 0.3);
+        }
+
+        .day-title {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-left: 8px;
+            font-weight: 500;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 24px;
+            border-left: 2px solid #EEE;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+            border-left: 2px solid transparent;
+        }
+
+        .timeline-icon {
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+        }
+
+        .location-title {
+            font-weight: 700;
+            font-size: 17px;
+            margin-top: -4px;
+            margin-bottom: 6px;
+            color: #222;
+        }
+
+        .location-desc {
+            font-size: 14px;
+            color: var(--text-light);
+            text-align: justify;
+        }
+
+        .tags {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .tag.photo {
+            background: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .tag.food {
+            background: #FFF3E0;
+            color: #F57C00;
+        }
+
+        .tag.relax {
+            background: #E8F5E9;
+            color: #388E3C;
+        }
+
+        .tag.hotel {
+            background: #FCE4EC;
+            color: #C2185B;
+        }
+
+        .tag.transport {
+            background: #F3E5F5;
+            color: #7B1FA2;
+        }
+
+        .tip-card {
+            background: #F0F4F8;
+            border: none;
+        }
+
+        .tip-title {
+            font-weight: 700;
+            color: #444;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        #map {
+            height: 450px;
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        /* Custom Map Markers */
+        .custom-marker {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .marker-day1 {
+            background-color: #FF2E4D;
+        }
+
+        .marker-day2 {
+            background-color: #FF9800;
+        }
+
+        .marker-day3 {
+            background-color: #2196F3;
+        }
+
+        .marker-day4 {
+            background-color: #9C27B0;
+        }
+
+        /* Map Legend */
+        .map-legend {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .restaurant-highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .note-box {
+            background: #FFF8E1;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #FFD54F;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        .social-share {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .red {
+            background-color: #ff2442;
+        }
+
+        .pink {
+            background-color: #ff4081;
+        }
+
+        .blue {
+            background-color: #1e88e5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🌊 大连4天3晚海滨漫游指南</h1>
+        <p>小红书风格 | 海滨风光 · 网红打卡 · 地道美食</p>
+    </div>
+
+    <div class="container">
+        <!-- Day 1 -->
+        <div class="card">
+            <div>
+                <span class="day-badge">Day 1</span>
+                <span class="day-title">周四 · 高铁抵达 & 汤泉疗愈</span>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🚄 中午：抵达大连北站</div>
+                <div class="location-desc">乘坐高铁抵达大连北站，建议直接打车前往预订的汤泉，开启放松之旅。</div>
+                <div class="tags">
+                    <span class="tag transport">交通</span>
+                    <span class="tag relax">轻松抵达</span>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🛀 下午至晚上：汤泉体验 & 过夜</div>
+                <div class="tags">
+                    <span class="tag hotel">网红汤泉</span>
+                    <span class="tag photo">拍照圣地</span>
+                    <span class="tag relax">放松</span>
+                </div>
+                <div class="location-desc">
+                    <p><strong>大连特色洗浴文化：</strong> 集泡汤、汗蒸、休闲、餐饮于一体的综合体验。</p>
+                    <p><strong>🏆 热门汤泉推荐：</strong></p>
+                    <p>• <strong>蔷萝花潭温泉洗浴</strong> - 独特的室外温泉，依山傍水，氛围感十足</p>
+                    <p>• <strong>漫汤泉</strong> - 休闲空间提供几十种水果和饮料不限量，年轻人热门选择</p>
+                    <p>• <strong>泉溪温泉生活馆</strong> - 集温泉洗浴、汗蒸、亲子乐园、餐饮住宿于一体</p>
+                    <div class="note-box">
+                        📸 <strong>拍照提示：</strong> 汤泉内部设计通常很有格调，可以拍出"在京都"的感觉。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 2 -->
+        <div class="card">
+            <div>
+                <span class="day-badge">Day 2</span>
+                <span class="day-title">周五 · 经典海岸线 & 欧式浪漫</span>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🏨 上午：渔人码头</div>
+                <div class="tags">
+                    <span class="tag photo">绝佳拍照点</span>
+                    <span class="tag">海滨风光</span>
+                </div>
+                <div class="location-desc">
+                    <p>彩色欧式建筑、停泊的渔船和灯塔，充满文艺气息。推荐打卡：</p>
+                    <p>• <strong>猫的天空之城概念书店</strong> - 面朝大海，可以写一张寄给未来的明信片</p>
+                    <p>• <strong>海遇·咖啡</strong> - 网红观景窗，手握印有"大连"字样的咖啡杯，背景是碧海渔船</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🦞 午餐：品海楼（渔人码头店）</div>
+                <div class="tags">
+                    <span class="tag food">海鲜</span>
+                    <span class="tag">老字号</span>
+                </div>
+                <div class="location-desc">
+                    老牌海鲜餐厅，尝试石锅鲍鱼、虾爬子锅贴等特色菜。
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🚶 下午：滨海路中段漫步</div>
+                <div class="location-desc">
+                    老虎滩至傅家庄公园，大连风景极佳的海景观光路。如果时间充裕，可以付费进入老虎滩海洋公园参观。
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🌉 傍晚：东港商务区</div>
+                <div class="tags">
+                    <span class="tag photo">欧式风情</span>
+                    <span class="tag">日落观赏</span>
+                </div>
+                <div class="location-desc">
+                    <p>• <strong>威尼斯水城</strong> - 乘坐贡多拉游船，仿佛穿越到欧洲</p>
+                    <p>• <strong>海边木栈道</strong> - 散步看海鸥，等待日落</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🥟 晚餐：喜鼎海胆水饺（东港店）</div>
+                <div class="tags">
+                    <span class="tag food">特色美食</span>
+                    <span class="tag photo">网红餐厅</span>
+                </div>
+                <div class="location-desc">
+                    海胆水饺是招牌，餐厅本身也拥有绝佳景观，是打卡热点。<strong class="restaurant-highlight">建议提前预约！</strong>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🌃 晚上：东港音乐喷泉 & 入住洲际酒店</div>
+                <div class="location-desc">
+                    欣赏音乐喷泉表演（注意查询当日开放时间），然后返回中山区的大连中远海运洲际酒店入住。
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 3 -->
+        <div class="card">
+            <div>
+                <span class="day-badge">Day 3</span>
+                <span class="day-title">周六 · 山海野趣 & 城市地标</span>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🏝️ 上午：棒棰岛风景区</div>
+                <div class="tags">
+                    <span class="tag photo">自然景观</span>
+                    <span class="tag relax">安静放松</span>
+                </div>
+                <div class="location-desc">
+                    环境清幽，海水清澈，是国宾馆所在地，景观维护得很好。可以沿着海滩散步，或远眺海中的棒棰岛。
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🍢 午餐：中山广场附近用餐</div>
+                <div class="tags">
+                    <span class="tag food">海鲜烧烤</span>
+                    <span class="tag photo">环境优美</span>
+                </div>
+                <div class="location-desc">
+                    <p>中山广场堪称"露天建筑博物馆"，周边有许多老建筑。推荐餐厅：</p>
+                    <p>• <strong>正黄旗海鲜烧烤大排档（延安路总店）</strong> - 知名海鲜烧烤，人气超高</p>
+                    <p>• <strong>UPPER KITCHEN（延安路店）</strong> - 环境和菜品俱佳的西餐厅，适合拍照</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🕊️ 下午：星海广场</div>
+                <div class="tags">
+                    <span class="tag photo">地标建筑</span>
+                    <span class="tag">城市地标</span>
+                </div>
+                <div class="location-desc">
+                    <p>亚洲最大的城市广场。可以：</p>
+                    <p>• <strong>喂海鸥</strong> - 提前准备面包</p>
+                    <p>• <strong>观赏星海湾跨海大桥</strong> - 日落时分景色尤其壮丽</p>
+                    <p>• <strong>体验娱乐项目</strong> - 广场上有一些游乐设施</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🌅 傍晚：海边日落</div>
+                <div class="location-desc">
+                    从星海广场步行至星海湾浴场或银沙滩，看一场海上日落。
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🦀 晚餐：星海广场附近海鲜大餐</div>
+                <div class="tags">
+                    <span class="tag food">海鲜大餐</span>
+                    <span class="tag">本地名菜</span>
+                </div>
+                <div class="location-desc">
+                    <p>推荐餐厅：</p>
+                    <p>• <strong>海味当家·蒸锅海鲜（星海广场店）</strong> - 主打原汁原味的蒸海鲜</p>
+                    <p>• <strong>旅大印象·大连名菜馆（星海店）</strong> - 品尝石锅海胆豆腐等本地名菜</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 4 -->
+        <div class="card">
+            <div>
+                <span class="day-badge">Day 4</span>
+                <span class="day-title">周日 · 文艺收尾 & 返程</span>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🎨 上午（可选方案A）：大连梵高梦境星空馆</div>
+                <div class="tags">
+                    <span class="tag photo">网红拍照地</span>
+                    <span class="tag">艺术体验</span>
+                </div>
+                <div class="location-desc">
+                    室内网红拍照圣地，拥有沉浸式梦幻灯光和多个3D主题场景，人均消费约50元，非常适合在旅程结束前拍一波美照。
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🚶 上午（可选方案B）：城市漫步</div>
+                <div class="tags">
+                    <span class="tag photo">历史建筑</span>
+                    <span class="tag relax">悠闲散步</span>
+                </div>
+                <div class="location-desc">
+                    在酒店附近的<strong>中山广场</strong>或<strong>南山风情街</strong>散步。南山风情街日式建筑群中有不少精致的咖啡馆，可以享受一个悠闲的上午。
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">🍚 午餐：日月昇渔家菜</div>
+                <div class="tags">
+                    <span class="tag food">本地菜</span>
+                    <span class="tag">性价比高</span>
+                </div>
+                <div class="location-desc">
+                    尝试大连本地菜馆，菜量十足，性价比高。
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon"></div>
+                <div class="location-title">👋 下午：整理行李 & 返程</div>
+                <div class="location-desc">
+                    整理行李，根据高铁时间前往大连北站，结束愉快旅程。
+                    <div class="note-box">
+                        💡 <strong>建议：</strong>提前2小时到达高铁站，考虑市内交通时间。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 旅行实用贴士 -->
+        <div class="card tip-card">
+            <div class="tip-title">💡 旅行实用贴士</div>
+            <div style="font-size: 14px; color: #555;">
+                <p><strong>🚗 交通：</strong> 大连市内景点相对集中，地铁、公交和打车相结合非常方便。使用地图App导航即可。</p>
+                <p><strong>👗 穿搭：</strong> 为了在拍照时更上镜，建议准备<strong>浅色系（如白色、米色）的连衣裙、风衣</strong>等。大连海滨风大，记得带防风外套。</p>
+                <p><strong>📱 小红书发帖灵感：</strong> 渔人码头咖啡馆拍"大连"字样咖啡杯、威尼斯水城贡多拉游船体验、喜鼎海胆水饺打卡、星海广场喂海鸥与跨海大桥合影、汤泉文化体验分享。</p>
+            </div>
+        </div>
+
+        <!-- 交互式地图 -->
+        <div id="map"></div>
+        
+        <script>
+            // Initialize map centered on Dalian
+            var map = L.map('map').setView([38.92, 121.62], 12);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            // Locations data - 大连旅行计划地点
+            var locations = [
+                // Day 1 - 红色标记
+                { name: "大连北站", coords: [39.022, 121.635], day: "Day 1", desc: "高铁抵达", colorClass: "marker-day1", label: "D1" },
+                { name: "蔷萝花潭温泉洗浴", coords: [38.960, 121.520], day: "Day 1", desc: "高颜值汤泉体验", colorClass: "marker-day1", label: "D1" },
+                { name: "漫汤泉", coords: [38.912, 121.654], day: "Day 1", desc: "水果饮料不限量", colorClass: "marker-day1", label: "D1" },
+                { name: "泉溪温泉生活馆", coords: [38.922, 121.634], day: "Day 1", desc: "温泉汗蒸亲子乐园", colorClass: "marker-day1", label: "D1" },
+                
+                // Day 2 - 橙色标记
+                { name: "大连中远海运洲际酒店", coords: [38.921, 121.639], day: "Day 2", desc: "中山区住宿", colorClass: "marker-day2", label: "D2" },
+                { name: "渔人码头", coords: [38.875, 121.685], day: "Day 2", desc: "彩色欧式建筑", colorClass: "marker-day2", label: "D2" },
+                { name: "品海楼(渔人码头店)", coords: [38.876, 121.682], day: "Day 2", desc: "老牌海鲜餐厅", colorClass: "marker-day2", label: "D2" },
+                { name: "滨海路中段", coords: [38.880, 121.670], day: "Day 2", desc: "老虎滩至傅家庄", colorClass: "marker-day2", label: "D2" },
+                { name: "东港商务区", coords: [38.922, 121.667], day: "Day 2", desc: "威尼斯水城", colorClass: "marker-day2", label: "D2" },
+                { name: "喜鼎海胆水饺(东港店)", coords: [38.924, 121.665], day: "Day 2", desc: "网红海胆水饺", colorClass: "marker-day2", label: "D2" },
+                
+                // Day 3 - 蓝色标记
+                { name: "棒棰岛风景区", coords: [38.876, 121.694], day: "Day 3", desc: "海水清澈环境幽静", colorClass: "marker-day3", label: "D3" },
+                { name: "中山广场", coords: [38.923, 121.645], day: "Day 3", desc: "露天建筑博物馆", colorClass: "marker-day3", label: "D3" },
+                { name: "正黄旗海鲜烧烤", coords: [38.926, 121.648], day: "Day 3", desc: "延安路总店", colorClass: "marker-day3", label: "D3" },
+                { name: "星海广场", coords: [38.881, 121.583], day: "Day 3", desc: "亚洲最大城市广场", colorClass: "marker-day3", label: "D3" },
+                { name: "星海湾浴场/银沙滩", coords: [38.870, 121.590], day: "Day 3", desc: "海边日落", colorClass: "marker-day3", label: "D3" },
+                { name: "海味当家·蒸锅海鲜", coords: [38.882, 121.585], day: "Day 3", desc: "星海广场店", colorClass: "marker-day3", label: "D3" },
+                
+                // Day 4 - 紫色标记
+                { name: "大连梵高梦境星空馆", coords: [38.910, 121.620], day: "Day 4", desc: "室内网红拍照圣地", colorClass: "marker-day4", label: "D4" },
+                { name: "南山风情街", coords: [38.915, 121.645], day: "Day 4", desc: "日式建筑群", colorClass: "marker-day4", label: "D4" },
+                { name: "日月昇渔家菜", coords: [38.925, 121.638], day: "Day 4", desc: "本地菜馆", colorClass: "marker-day4", label: "D4" }
+            ];
+
+            locations.forEach(function (loc) {
+                var icon = L.divIcon({
+                    className: 'custom-marker ' + loc.colorClass,
+                    html: loc.label,
+                    iconSize: [24, 24],
+                    iconAnchor: [12, 12]
+                });
+
+                L.marker(loc.coords, { icon: icon }).addTo(map)
+                    .bindPopup("<b>" + loc.name + "</b><br>" + loc.day + ": " + loc.desc);
+            });
+
+            // Add Legend
+            var legend = L.control({ position: 'bottomright' });
+            legend.onAdd = function (map) {
+                var div = L.DomUtil.create('div', 'map-legend');
+                div.innerHTML += '<div class="legend-item"><div class="legend-color" style="background:#FF2E4D"></div>Day 1: 抵达 & 汤泉</div>';
+                div.innerHTML += '<div class="legend-item"><div class="legend-color" style="background:#FF9800"></div>Day 2: 海岸线 & 欧式风情</div>';
+                div.innerHTML += '<div class="legend-item"><div class="legend-color" style="background:#2196F3"></div>Day 3: 山海野趣 & 城市地标</div>';
+                div.innerHTML += '<div class="legend-item"><div class="legend-color" style="background:#9C27B0"></div>Day 4: 文艺收尾 & 返程</div>';
+                return div;
+            };
+            legend.addTo(map);
+        </script>
+        
+        <div class="social-share">
+            <div class="social-icon red">
+                <i class="fas fa-heart"></i>
+            </div>
+            <div class="social-icon pink">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="social-icon blue">
+                <i class="fas fa-share-alt"></i>
+            </div>
+        </div>
+        
+        <div style="text-align:center; margin-top:10px; font-size:12px; color:#999;">
+            大连4天3晚旅行计划 | 专为小红书爱好者设计<br>
+            行程可根据个人兴趣和体力灵活调整，享受你的大连之旅吧！
+        </div>
+    </div>
+
+</body>
+</html>
