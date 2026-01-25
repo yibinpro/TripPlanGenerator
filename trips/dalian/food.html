@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大连美食地图 - 小红书&抖音热门推荐</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        :root {
+            --seafood-color: #2196F3;
+            --japanese-color: #FF9800;
+            --dongbei-color: #F44336;
+        }
+
+        .food-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            padding: 120px 0 60px;
+            color: white;
+            text-align: center;
+        }
+
+        .food-hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .food-hero p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+        }
+
+        .filter-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            border: 2px solid #e0e0e0;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .filter-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-tab.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .filter-tab.seafood.active {
+            background: var(--seafood-color);
+            border-color: var(--seafood-color);
+        }
+
+        .filter-tab.japanese.active {
+            background: var(--japanese-color);
+            border-color: var(--japanese-color);
+        }
+
+        .filter-tab.dongbei.active {
+            background: var(--dongbei-color);
+            border-color: var(--dongbei-color);
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 0 1.5rem;
+        }
+
+        .food-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transition: all 0.3s ease;
+            border-top: 4px solid #e0e0e0;
+        }
+
+        .food-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .food-card.seafood {
+            border-top-color: var(--seafood-color);
+        }
+
+        .food-card.japanese {
+            border-top-color: var(--japanese-color);
+        }
+
+        .food-card.dongbei {
+            border-top-color: var(--dongbei-color);
+        }
+
+        .food-card-header {
+            padding: 1.5rem;
+            background: linear-gradient(to bottom, #f8f9fa, white);
+        }
+
+        .food-card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .food-price {
+            color: #ff6b6b;
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        .food-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .food-category.seafood {
+            background: rgba(33, 150, 243, 0.1);
+            color: var(--seafood-color);
+        }
+
+        .food-category.japanese {
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--japanese-color);
+        }
+
+        .food-category.dongbei {
+            background: rgba(244, 67, 54, 0.1);
+            color: var(--dongbei-color);
+        }
+
+        .food-card-body {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .food-section {
+            margin-bottom: 1rem;
+        }
+
+        .food-section-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .food-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .food-list li {
+            padding: 0.25rem 0;
+            font-size: 0.9rem;
+            color: #666;
+            display: flex;
+            align-items: start;
+            gap: 0.5rem;
+        }
+
+        .food-list li::before {
+            content: "•";
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .pros-list li::before {
+            content: "✓";
+            color: #10b981;
+        }
+
+        .cons-list li::before {
+            content: "!";
+            color: #f59e0b;
+        }
+
+        .food-address {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: start;
+            gap: 0.5rem;
+        }
+
+        .map-btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background: #667eea;
+            color: white;
+            text-align: center;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .map-btn:hover {
+            background: #5568d3;
+            transform: scale(1.02);
+        }
+
+        #map {
+            height: 500px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 3rem auto;
+            border-radius: 1rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-container {
+            padding: 0 1.5rem 3rem;
+        }
+
+        .custom-marker {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            width: 32px;
+            height: 32px;
+        }
+
+        .marker-seafood {
+            background-color: var(--seafood-color);
+        }
+
+        .marker-japanese {
+            background-color: var(--japanese-color);
+        }
+
+        .marker-dongbei {
+            background-color: var(--dongbei-color);
+        }
+
+        @media (max-width: 768px) {
+            .food-hero h1 {
+                font-size: 2rem;
+            }
+
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #map {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <span class="logo-icon">✈️</span>
+                <span class="logo-text">YG Travel</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../../index.html" class="nav-link">首页</a></li>
+                <li><a href="../index.html" class="nav-link">旅行计划</a></li>
+                <li><a href="#" class="nav-link">美食地图</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="food-hero">
+        <div class="container">
+            <h1>🍜 大连美食地图</h1>
+            <p>小红书 & 抖音热门推荐 · 精选25+优质餐厅</p>
+        </div>
+    </section>
+
+    <!-- Filter Tabs -->
+    <div class="filter-container">
+        <div class="filter-tabs">
+            <div class="filter-tab active" data-category="all">🍽️ 全部美食</div>
+            <div class="filter-tab seafood" data-category="seafood">🦞 海鲜 (12)</div>
+            <div class="filter-tab japanese" data-category="japanese">🍣 日料 (6)</div>
+            <div class="filter-tab dongbei" data-category="dongbei">🥟 东北菜 (7)</div>
+        </div>
+    </div>
+
+    <!-- Food Cards Grid -->
+    <div class="food-grid" id="foodGrid">
+        <!-- Cards will be dynamically generated -->
+    </div>
+
+    <!-- Map -->
+    <div class="map-container">
+        <div id="map"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-icon">✈️</span>
+                        <span class="logo-text">YG Travel</span>
+                    </div>
+                    <p class="footer-description">探索世界，享受旅程</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 YG Travel. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="food-data.js"></script>
+    <script src="food-app.js"></script>
+</body>
+
+</html>
