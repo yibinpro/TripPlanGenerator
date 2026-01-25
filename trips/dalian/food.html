@@ -16,6 +16,7 @@
             --seafood-color: #2196F3;
             --japanese-color: #FF9800;
             --dongbei-color: #F44336;
+            --cafe-color: #8B4513;
         }
 
         .food-hero {
@@ -86,6 +87,11 @@
             border-color: var(--dongbei-color);
         }
 
+        .filter-tab.cafe.active {
+            background: var(--cafe-color);
+            border-color: var(--cafe-color);
+        }
+
         .food-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -119,6 +125,10 @@
 
         .food-card.dongbei {
             border-top-color: var(--dongbei-color);
+        }
+
+        .food-card.cafe {
+            border-top-color: var(--cafe-color);
         }
 
         .food-card-header {
@@ -163,6 +173,11 @@
         .food-category.dongbei {
             background: rgba(244, 67, 54, 0.1);
             color: var(--dongbei-color);
+        }
+
+        .food-category.cafe {
+            background: rgba(139, 69, 19, 0.1);
+            color: var(--cafe-color);
         }
 
         .food-card-body {
@@ -281,6 +296,10 @@
             background-color: var(--dongbei-color);
         }
 
+        .marker-cafe {
+            background-color: var(--cafe-color);
+        }
+
         @media (max-width: 768px) {
             .food-hero h1 {
                 font-size: 2rem;
@@ -317,7 +336,7 @@
     <section class="food-hero">
         <div class="container">
             <h1>🍜 大连美食地图</h1>
-            <p>小红书 & 抖音热门推荐 · 精选25+优质餐厅</p>
+            <p>小红书 & 抖音热门推荐 · 精选39+优质店铺</p>
         </div>
     </section>
 
@@ -326,8 +345,9 @@
         <div class="filter-tabs">
             <div class="filter-tab active" data-category="all">🍽️ 全部美食</div>
             <div class="filter-tab seafood" data-category="seafood">🦞 海鲜 (12)</div>
-            <div class="filter-tab japanese" data-category="japanese">🍣 日料 (6)</div>
+            <div class="filter-tab japanese" data-category="japanese">🍣 日料 (12)</div>
             <div class="filter-tab dongbei" data-category="dongbei">🥟 东北菜 (7)</div>
+            <div class="filter-tab cafe" data-category="cafe">☕ 咖啡厅 (8)</div>
         </div>
     </div>
 

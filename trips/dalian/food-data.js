@@ -314,6 +314,109 @@ const restaurantsData = [
         mustTry: ["猪排定食", "照烧鸡腿饭"],
         source: "douyin"
     },
+    {
+        name: "秋川・sakaba・焼鳥",
+        category: "japanese",
+        price: 115,
+        address: "中山区中山路",
+        coords: [38.920, 121.637],
+        pros: [
+            "高性价比网红店",
+            "海胆生鱼饭超级好吃",
+            "烧鸟串烧很正宗"
+        ],
+        cons: [
+            "热门时段需要等位"
+        ],
+        mustTry: ["海胆生鱼饭", "烧鸟串烧"],
+        source: "doubao"
+    },
+    {
+        name: "浅草・鱼蔵日本料理",
+        category: "japanese",
+        price: 130,
+        address: "中山区七七街",
+        coords: [38.912, 121.648],
+        pros: [
+            "摆盘精致适合拍照",
+            "炭烤活鳗外脆内嫩",
+            "三文鱼创新菜很有特色"
+        ],
+        cons: [
+            "位置在七七街，需要步行"
+        ],
+        mustTry: ["炭烤活鳗", "三文鱼创意卷"],
+        source: "doubao"
+    },
+    {
+        name: "壽司樂 Sushi Luck",
+        category: "japanese",
+        price: 140,
+        address: "中山区延安路",
+        coords: [38.924, 121.642],
+        pros: [
+            "口碑好，本地人推荐",
+            "寿司新鲜品质稳定",
+            "创意卷很有惊喜"
+        ],
+        cons: [
+            "价格偏中高"
+        ],
+        mustTry: ["招牌寿司拼盘", "创意卷"],
+        source: "doubao"
+    },
+    {
+        name: "SUGIKI 杉木日本料理",
+        category: "japanese",
+        price: 430,
+        address: "中山区人民路",
+        coords: [38.917, 121.639],
+        pros: [
+            "高端正宗日料",
+            "活烤鳗鱼饭是招牌",
+            "海鲜饭用料十足"
+        ],
+        cons: [
+            "价格较高，人均400+",
+            "建议提前预约"
+        ],
+        mustTry: ["活烤鳗鱼饭", "海鲜饭"],
+        source: "doubao"
+    },
+    {
+        name: "贵善臻选日料",
+        category: "japanese",
+        price: 160,
+        address: "中山区友好广场",
+        coords: [38.921, 121.640],
+        pros: [
+            "官方活动严选品牌",
+            "品质有保证",
+            "环境优雅"
+        ],
+        cons: [
+            "价格中等偏上"
+        ],
+        mustTry: ["刺身拼盘", "寿司套餐"],
+        source: "doubao"
+    },
+    {
+        name: "深夜食堂·裕子居酒屋",
+        category: "japanese",
+        price: 110,
+        address: "甘井子区机场附近",
+        coords: [38.965, 121.540],
+        pros: [
+            "营业至晚上23点",
+            "三文鱼刺身新鲜",
+            "LA牛排也很棒"
+        ],
+        cons: [
+            "位置靠近机场，市区较远"
+        ],
+        mustTry: ["三文鱼刺身", "LA牛排"],
+        source: "doubao"
+    },
 
     // ===== 东北菜类 (7家) =====
     {
@@ -434,6 +537,144 @@ const restaurantsData = [
             "价格略高于普通水饺馆"
         ],
         mustTry: ["冰花煎饺", "三鲜水饺"],
+        source: "xiaohongshu"
+    },
+
+    // ===== 咖啡厅类 (8家) =====
+    {
+        name: "胡萝卜咖啡 CARROT COFFEE",
+        category: "cafe",
+        price: 45,
+        address: "中山区南山路169号",
+        coords: [38.915, 121.645],
+        pros: [
+            "白色工业风超出片",
+            "明星同款网红咖啡",
+            "卡梅罗拿铁必点"
+        ],
+        cons: [
+            "周末人多需要等位"
+        ],
+        mustTry: ["卡梅罗拿铁", "燕麦拿铁"],
+        source: "xiaohongshu"
+    },
+    {
+        name: "C27空间",
+        category: "cafe",
+        price: 30,
+        address: "中山区海之韵路115号3层",
+        coords: [38.930, 121.680],
+        pros: [
+            "落地窗看东港天际线",
+            "下午4点光线最佳",
+            "性价比超高"
+        ],
+        cons: [
+            "位置较高需要爬楼"
+        ],
+        mustTry: ["美式咖啡", "桂花拿铁"],
+        source: "xiaohongshu"
+    },
+    {
+        name: "飞向海边（半山书咖）",
+        category: "cafe",
+        price: 50,
+        address: "西岗区滨海西路137号",
+        coords: [38.880, 121.590],
+        pros: [
+            "阳台躺椅看跨海大桥",
+            "海景view绝佳",
+            "手冲咖啡专业"
+        ],
+        cons: [
+            "位置稍偏需要打车"
+        ],
+        mustTry: ["手冲咖啡", "桂花酒酿拿铁"],
+        source: "xiaohongshu"
+    },
+    {
+        name: "海遇 MANGATA COFFEE",
+        category: "cafe",
+        price: 55,
+        address: "沙河口区星海湾",
+        coords: [38.870, 121.590],
+        pros: [
+            "360°全透明玻璃房",
+            "一楼玻璃地板悬浮感",
+            "像踩在海面上"
+        ],
+        cons: [
+            "热门时段人很多"
+        ],
+        mustTry: ["特调咖啡", "海景拿铁"],
+        source: "xiaohongshu"
+    },
+    {
+        name: "83℃ COFFEE",
+        category: "cafe",
+        price: 40,
+        address: "中山区东港",
+        coords: [38.922, 121.667],
+        pros: [
+            "大连最独特新奇咖啡馆",
+            "文艺氛围浓厚",
+            "适合拍照打卡"
+        ],
+        cons: [
+            "座位不多"
+        ],
+        mustTry: ["手冲单品", "创意特调"],
+        source: "xiaohongshu"
+    },
+    {
+        name: "667coffee",
+        category: "cafe",
+        price: 48,
+        address: "中山区东港",
+        coords: [38.923, 121.668],
+        pros: [
+            "绝美海景窗景",
+            "东港文艺咖啡代表",
+            "环境安静适合办公"
+        ],
+        cons: [
+            "15寸笔记本可能偏小"
+        ],
+        mustTry: ["澳白", "手冲咖啡"],
+        source: "xiaohongshu"
+    },
+    {
+        name: "A1kk·coffee",
+        category: "cafe",
+        price: 42,
+        address: "中山区东港威尼斯水城",
+        coords: [38.923, 121.668],
+        pros: [
+            "窗边可看贡多拉游船",
+            "焦糖美罗拿铁必点",
+            "巴斯克蛋糕很棒"
+        ],
+        cons: [
+            "晚上人会比较多"
+        ],
+        mustTry: ["焦糖美罗拿铁", "巴斯克蛋糕"],
+        source: "xiaohongshu"
+    },
+    {
+        name: "caanbyour",
+        category: "cafe",
+        price: 60,
+        address: "中山区滨海东路200号（琥珀湾）",
+        coords: [38.870, 121.660],
+        pros: [
+            "沙滩+落地窗夕阳绝美",
+            "被称为'小镰仓'",
+            "海盐焦糖蛋糕超好吃"
+        ],
+        cons: [
+            "价格稍高"
+        ],
+        mustTry: ["澳白", "海盐焦糖蛋糕"],
         source: "xiaohongshu"
     }
 ];

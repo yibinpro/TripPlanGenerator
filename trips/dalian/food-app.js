@@ -61,7 +61,8 @@
         const categoryLabels = {
             'seafood': '🦞 海鲜',
             'japanese': '🍣 日料',
-            'dongbei': '🥟 东北菜'
+            'dongbei': '🥟 东北菜',
+            'cafe': '☕ 咖啡厅'
         };
 
         card.innerHTML = `
@@ -141,7 +142,8 @@
         const categoryIcons = {
             'seafood': '🦞',
             'japanese': '🍣',
-            'dongbei': '🥟'
+            'dongbei': '🥟',
+            'cafe': '☕'
         };
 
         restaurants.forEach(restaurant => {
