@@ -403,9 +403,10 @@
             // Initialize map centered on Dalian
             var map = L.map('map').setView([38.92, 121.62], 12);
 
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
                 maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                subdomains: ['1', '2', '3', '4'],
+                attribution: '&copy; <a href="https://www.amap.com/">高德地图</a>'
             }).addTo(map);
 
             // Locations data

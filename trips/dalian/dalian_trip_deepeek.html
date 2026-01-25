@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -311,17 +312,18 @@
             .container {
                 padding: 15px;
             }
-            
+
             .card {
                 padding: 20px;
             }
-            
+
             .header h1 {
                 font-size: 22px;
             }
         }
     </style>
 </head>
+
 <body>
 
     <div class="header">
@@ -581,14 +583,15 @@
 
         <!-- 交互式地图 -->
         <div id="map"></div>
-        
+
         <script>
             // Initialize map centered on Dalian
             var map = L.map('map').setView([38.92, 121.62], 12);
 
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
                 maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                subdomains: ['1', '2', '3', '4'],
+                attribution: '&copy; <a href="https://www.amap.com/">高德地图</a>'
             }).addTo(map);
 
             // Locations data - 大连旅行计划地点
@@ -598,7 +601,7 @@
                 { name: "蔷萝花潭温泉洗浴", coords: [38.960, 121.520], day: "Day 1", desc: "高颜值汤泉体验", colorClass: "marker-day1", label: "D1" },
                 { name: "漫汤泉", coords: [38.912, 121.654], day: "Day 1", desc: "水果饮料不限量", colorClass: "marker-day1", label: "D1" },
                 { name: "泉溪温泉生活馆", coords: [38.922, 121.634], day: "Day 1", desc: "温泉汗蒸亲子乐园", colorClass: "marker-day1", label: "D1" },
-                
+
                 // Day 2 - 橙色标记
                 { name: "大连中远海运洲际酒店", coords: [38.921, 121.639], day: "Day 2", desc: "中山区住宿", colorClass: "marker-day2", label: "D2" },
                 { name: "渔人码头", coords: [38.875, 121.685], day: "Day 2", desc: "彩色欧式建筑", colorClass: "marker-day2", label: "D2" },
@@ -606,7 +609,7 @@
                 { name: "滨海路中段", coords: [38.880, 121.670], day: "Day 2", desc: "老虎滩至傅家庄", colorClass: "marker-day2", label: "D2" },
                 { name: "东港商务区", coords: [38.922, 121.667], day: "Day 2", desc: "威尼斯水城", colorClass: "marker-day2", label: "D2" },
                 { name: "喜鼎海胆水饺(东港店)", coords: [38.924, 121.665], day: "Day 2", desc: "网红海胆水饺", colorClass: "marker-day2", label: "D2" },
-                
+
                 // Day 3 - 蓝色标记
                 { name: "棒棰岛风景区", coords: [38.876, 121.694], day: "Day 3", desc: "海水清澈环境幽静", colorClass: "marker-day3", label: "D3" },
                 { name: "中山广场", coords: [38.923, 121.645], day: "Day 3", desc: "露天建筑博物馆", colorClass: "marker-day3", label: "D3" },
@@ -614,7 +617,7 @@
                 { name: "星海广场", coords: [38.881, 121.583], day: "Day 3", desc: "亚洲最大城市广场", colorClass: "marker-day3", label: "D3" },
                 { name: "星海湾浴场/银沙滩", coords: [38.870, 121.590], day: "Day 3", desc: "海边日落", colorClass: "marker-day3", label: "D3" },
                 { name: "海味当家·蒸锅海鲜", coords: [38.882, 121.585], day: "Day 3", desc: "星海广场店", colorClass: "marker-day3", label: "D3" },
-                
+
                 // Day 4 - 紫色标记
                 { name: "大连梵高梦境星空馆", coords: [38.910, 121.620], day: "Day 4", desc: "室内网红拍照圣地", colorClass: "marker-day4", label: "D4" },
                 { name: "南山风情街", coords: [38.915, 121.645], day: "Day 4", desc: "日式建筑群", colorClass: "marker-day4", label: "D4" },
@@ -645,7 +648,7 @@
             };
             legend.addTo(map);
         </script>
-        
+
         <div class="social-share">
             <div class="social-icon red">
                 <i class="fas fa-heart"></i>
@@ -657,7 +660,7 @@
                 <i class="fas fa-share-alt"></i>
             </div>
         </div>
-        
+
         <div style="text-align:center; margin-top:10px; font-size:12px; color:#999;">
             大连4天3晚旅行计划 | 专为小红书爱好者设计<br>
             行程可根据个人兴趣和体力灵活调整，享受你的大连之旅吧！
@@ -665,4 +668,5 @@
     </div>
 
 </body>
+
 </html>

@@ -163,7 +163,7 @@ MIT License
 
 ## 🙏 致谢
 
-- 地图数据来自 [OpenStreetMap](https://www.openstreetmap.org/)
+- 地图数据来自 [高德地图](https://www.amap.com/)
 - 地图库使用 [Leaflet.js](https://leafletjs.com/)
 - 字体来自 [Google Fonts](https://fonts.google.com/)
 
