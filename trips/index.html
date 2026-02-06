@@ -3,54 +3,164 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>旅行计划 - YG Travel</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>旅行计划 - 漫迹 Manji</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.4);
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 16px 40px;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        /* Hero */
         .trips-hero {
-            padding: 120px 0 60px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            color: white;
+            padding: 140px 40px 80px;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trips-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.2) 0%, transparent 60%);
         }
 
         .trips-hero h1 {
-            font-size: 3rem;
+            font-size: clamp(36px, 6vw, 56px);
             font-weight: 800;
-            margin-bottom: 1rem;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+            position: relative;
         }
 
         .trips-hero p {
-            font-size: 1.25rem;
-            opacity: 0.95;
+            font-size: 18px;
+            color: var(--text-secondary);
+            position: relative;
         }
 
+        /* Container */
         .trips-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 4rem 1.5rem;
+            padding: 60px 40px;
         }
 
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-light);
+            font-weight: 600;
+            margin-bottom: 48px;
+            transition: gap 0.3s ease;
+        }
+
+        .back-link:hover {
+            gap: 12px;
+        }
+
+        /* City Section */
         .city-section {
-            margin-bottom: 4rem;
+            margin-bottom: 80px;
         }
 
         .city-header {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 3px solid #667eea;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--glass-border);
         }
 
         .city-icon {
-            font-size: 2.5rem;
+            font-size: 40px;
         }
 
         .city-title {
-            font-size: 2rem;
+            font-size: 32px;
             font-weight: 800;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
@@ -58,134 +168,190 @@
             background-clip: text;
         }
 
+        /* Version Grid */
         .versions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
         }
 
         .version-card {
-            background: white;
-            border-radius: 1rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .version-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            border-color: #667eea;
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 60px rgba(99, 102, 241, 0.1);
         }
 
         .version-header {
-            padding: 1.5rem;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
+            padding: 24px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .version-header.gemini {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .version-header.deepseek {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
-
-        .version-header.doubao {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-        }
-
-        .version-header.qwen {
-            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
-        }
-
-        .ai-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .version-name {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .version-subtitle {
-            font-size: 0.875rem;
+        .version-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
             opacity: 0.9;
         }
 
+        .version-header.gemini::before {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .version-header.deepseek::before {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .version-header.doubao::before {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .version-header.qwen::before {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .version-header.food::before {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .ai-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .version-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            position: relative;
+        }
+
+        .version-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            position: relative;
+        }
+
+        .recommended-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 12px;
+            position: relative;
+        }
+
         .version-body {
-            padding: 1.5rem;
+            padding: 24px;
         }
 
         .version-features {
             list-style: none;
-            margin-bottom: 1rem;
+            margin-bottom: 20px;
         }
 
         .version-features li {
-            padding: 0.5rem 0;
+            padding: 10px 0;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            color: #64748b;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 15px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .version-features li:last-child {
+            border-bottom: none;
         }
 
         .version-features li::before {
             content: "✓";
-            color: #10b981;
+            color: #22c55e;
             font-weight: bold;
         }
 
         .view-btn {
             display: block;
             width: 100%;
-            padding: 0.875rem;
-            background: #667eea;
+            padding: 14px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
             color: white;
             text-align: center;
-            border-radius: 0.5rem;
+            border-radius: 12px;
             font-weight: 700;
+            font-size: 15px;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
 
         .view-btn:hover {
-            background: #4f46e5;
             transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
         }
 
-        .recommended-badge {
-            display: inline-block;
-            background: #10b981;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-top: 0.5rem;
+        /* Coming Soon */
+        .coming-soon-section {
+            text-align: center;
+            padding: 60px 0;
         }
 
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #667eea;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            transition: gap 0.3s ease;
+        .coming-soon-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
         }
 
-        .back-link:hover {
-            gap: 0.75rem;
+        .coming-soon-text {
+            font-size: 20px;
+            color: var(--text-tertiary);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 60px 40px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+        }
+
+        .footer-brand {
+            margin-bottom: 24px;
+        }
+
+        .footer p {
+            color: var(--text-tertiary);
+            font-size: 14px;
         }
 
         @media (max-width: 768px) {
-            .trips-hero h1 {
-                font-size: 2rem;
+            .navbar {
+                padding: 12px 20px;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .trips-hero {
+                padding: 120px 24px 60px;
+            }
+
+            .trips-container {
+                padding: 40px 20px;
             }
 
             .versions-grid {
@@ -198,11 +364,11 @@
 <body>
     <!-- Navigation -->
     <nav class="navbar">
-        <div class="container nav-container">
-            <div class="logo">
-                <span class="logo-icon">✈️</span>
-                <span class="logo-text">YG Travel</span>
-            </div>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon">🌏</span>
+                <span>漫迹 Manji</span>
+            </a>
             <ul class="nav-menu">
                 <li><a href="../index.html" class="nav-link">首页</a></li>
                 <li><a href="./index.html" class="nav-link">旅行计划</a></li>
@@ -213,10 +379,8 @@
 
     <!-- Hero Section -->
     <section class="trips-hero">
-        <div class="container">
-            <h1>🗺️ 旅行计划</h1>
-            <p>精心策划的旅行路线，多个AI版本任你选择</p>
-        </div>
+        <h1>🗺️ 旅行计划</h1>
+        <p>精心策划的旅行路线，多个AI版本任你选择</p>
     </section>
 
     <!-- Trips Container -->
@@ -260,12 +424,13 @@
                         <div class="ai-icon">🧠</div>
                         <div class="version-name">DeepSeek 版本</div>
                         <div class="version-subtitle">深度优化 · 详细攻略</div>
+                        <span class="recommended-badge">iOS风格</span>
                     </div>
                     <div class="version-body">
                         <ul class="version-features">
-                            <li>详细行程规划</li>
-                            <li>预算建议</li>
-                            <li>实用贴士</li>
+                            <li>分屏地图布局</li>
+                            <li>距离计算功能</li>
+                            <li>丝滑动效</li>
                         </ul>
                         <a href="./dalian/dalian_trip_deepeek.html" class="view-btn">查看详情</a>
                     </div>
@@ -307,7 +472,7 @@
 
                 <!-- Food Guide Card -->
                 <div class="version-card">
-                    <div class="version-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <div class="version-header food">
                         <div class="ai-icon">🍜</div>
                         <div class="version-name">美食地图</div>
                         <div class="version-subtitle">小红书 & 抖音 · 热门餐厅</div>
@@ -326,53 +491,23 @@
         </div>
 
         <!-- Coming Soon Section -->
-        <div class="city-section">
-            <div class="city-header">
-                <span class="city-icon">🚀</span>
-                <h2 class="city-title">更多城市即将上线</h2>
-            </div>
-            <p style="text-align: center; color: #64748b; font-size: 1.125rem;">
-                敬请期待更多精彩的旅行路线...
-            </p>
+        <div class="coming-soon-section">
+            <div class="coming-soon-icon">🚀</div>
+            <h2 class="city-title" style="text-align: center; margin-bottom: 16px;">更多城市即将上线</h2>
+            <p class="coming-soon-text">敬请期待更多精彩的旅行路线...</p>
         </div>
     </div>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="logo">
-                        <span class="logo-icon">✈️</span>
-                        <span class="logo-text">YG Travel</span>
-                    </div>
-                    <p class="footer-description">探索世界，享受旅程</p>
-                </div>
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>快速链接</h4>
-                        <ul>
-                            <li><a href="../index.html">首页</a></li>
-                            <li><a href="./index.html">旅行计划</a></li>
-                            <li><a href="../index.html#about">关于</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h4>联系方式</h4>
-                        <ul>
-                            <li><a href="https://github.com/yibinpro" target="_blank">GitHub</a></li>
-                            <li><a href="mailto:contact@example.com">Email</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 YG Travel. All rights reserved.</p>
+        <div class="footer-brand">
+            <div class="logo" style="justify-content: center;">
+                <span class="logo-icon">🌏</span>
+                <span>漫迹 Manji</span>
             </div>
         </div>
+        <p>&copy; 2026 漫迹 Manji. All rights reserved.</p>
     </footer>
-
-    <script src="../js/main.js"></script>
 </body>
 
 </html>

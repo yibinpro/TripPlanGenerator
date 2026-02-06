@@ -3,142 +3,448 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大连4天3晚·小红书特种兵（高颜休闲版）</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>大连4天3晚·高颜休闲版 | 漫迹 Manji</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <style>
         :root {
-            --primary: #FF2E4D;
-            /* XHS Red */
-            --secondary: #333;
-            --bg: #FAFAFA;
-            --card-bg: #FFFFFF;
-            --text-main: #333;
-            --text-light: #666;
-            --accent: #FFB3C1;
+            --primary: #007AFF;
+            --primary-dark: #0056CC;
+            --secondary: #FF2D55;
+            --accent: #5856D6;
+            --bg: #F2F2F7;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --glass-bg: rgba(255, 255, 255, 0.72);
+            --text-primary: #1C1C1E;
+            --text-secondary: #3C3C43;
+            --text-tertiary: #8E8E93;
+            --separator: rgba(60, 60, 67, 0.12);
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+            --day1-color: #FF3B30;
+            --day2-color: #FF9500;
+            --day3-color: #007AFF;
+            --day4-color: #AF52DE;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
             background-color: var(--bg);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            max-width: 600px;
+            color: var(--text-primary);
+            line-height: 1.5;
+            overflow: hidden;
+            height: 100vh;
+            height: 100dvh;
+        }
+
+        /* iOS Style Header */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid var(--separator);
+            padding: 12px 20px;
+            padding-top: max(12px, env(safe-area-inset-top));
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        .header {
-            background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-            padding: 50px 20px 30px;
-            text-align: center;
-            color: white;
-            border-radius: 0 0 24px 24px;
-            box-shadow: 0 10px 20px rgba(253, 160, 133, 0.3);
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
         }
 
-        .header h1 {
-            margin: 0;
-            font-size: 26px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        .brand-icon {
+            font-size: 24px;
         }
 
-        .header p {
-            margin: 10px 0 0;
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--primary);
+            font-size: 17px;
             font-weight: 500;
-            font-size: 14px;
-            opacity: 0.95;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
         }
 
-        .container {
-            padding: 20px;
+        .back-btn:hover {
+            opacity: 0.7;
         }
 
-        .card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0, 0, 0, 0.02);
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Split View Layout */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            height: 100dvh;
+            padding-top: 56px;
+        }
+
+        /* Map Panel */
+        .map-panel {
+            flex: 1;
             position: relative;
-            overflow: hidden;
+            min-width: 0;
         }
 
-        .day-badge {
-            display: inline-block;
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Map Controls */
+        .map-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .map-control-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border: 0.5px solid var(--separator);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-size: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .map-control-btn:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .map-control-btn:active {
+            transform: scale(0.95);
+        }
+
+        .map-control-btn.active {
             background: var(--primary);
             color: white;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 10px rgba(255, 46, 77, 0.3);
         }
 
-        .day-title {
-            font-size: 14px;
-            color: var(--text-light);
-            margin-left: 8px;
-            font-weight: 500;
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-left: 24px;
-            margin-bottom: 24px;
-            border-left: 2px solid #EEE;
-        }
-
-        .timeline-item:last-child {
-            margin-bottom: 0;
-            border-left: 2px solid transparent;
-        }
-
-        .timeline-icon {
+        /* Location Panel */
+        .location-panel {
             position: absolute;
-            left: -9px;
-            top: 0;
-            width: 16px;
-            height: 16px;
-            background: #fff;
-            border: 4px solid var(--primary);
+            bottom: 30px;
+            left: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: 16px;
+            border: 0.5px solid var(--separator);
+            padding: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .location-panel.hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+
+        .location-panel-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .distance-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .distance-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .destination-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* Map Legend */
+        .map-legend {
+            position: absolute;
+            bottom: 30px;
+            right: 20px;
+            z-index: 999;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 12px;
+            border: 0.5px solid var(--separator);
+            box-shadow: var(--shadow);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
         }
 
-        .location-title {
+        /* Content Panel */
+        .content-panel {
+            width: 420px;
+            min-width: 380px;
+            background: var(--bg);
+            overflow-y: auto;
+            border-left: 0.5px solid var(--separator);
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .content-inner {
+            padding: 24px 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Hero Section */
+        .trip-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 28px 24px;
+            color: white;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+
+        .trip-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+        }
+
+        .trip-hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .trip-hero h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .trip-hero p {
+            font-size: 15px;
+            opacity: 0.9;
+            position: relative;
+        }
+
+        /* Day Section */
+        .day-section {
+            margin-bottom: 32px;
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--separator);
+        }
+
+        .day-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 14px;
             font-weight: 700;
+            color: white;
+        }
+
+        .day-badge.day1 {
+            background: var(--day1-color);
+        }
+
+        .day-badge.day2 {
+            background: var(--day2-color);
+        }
+
+        .day-badge.day3 {
+            background: var(--day3-color);
+        }
+
+        .day-badge.day4 {
+            background: var(--day4-color);
+        }
+
+        .day-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* Location Card */
+        .location-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .location-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .location-card:active {
+            transform: scale(0.98);
+        }
+
+        .location-card.selected {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+        }
+
+        .location-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .location-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .location-icon.day1 {
+            background: rgba(255, 59, 48, 0.12);
+        }
+
+        .location-icon.day2 {
+            background: rgba(255, 149, 0, 0.12);
+        }
+
+        .location-icon.day3 {
+            background: rgba(0, 122, 255, 0.12);
+        }
+
+        .location-icon.day4 {
+            background: rgba(175, 82, 222, 0.12);
+        }
+
+        .location-name {
             font-size: 17px;
-            margin-top: -4px;
-            margin-bottom: 6px;
-            color: #222;
+            font-weight: 600;
+        }
+
+        .location-time {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
         }
 
         .location-desc {
-            font-size: 14px;
-            color: var(--text-light);
-            text-align: justify;
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
         }
 
         .tags {
-            margin-top: 8px;
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 8px;
+            margin-top: 12px;
         }
 
         .tag {
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 6px;
+            font-size: 12px;
             font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
         }
 
         .tag.photo {
@@ -161,30 +467,28 @@
             color: #C2185B;
         }
 
-        .tip-card {
-            background: #F0F4F8;
-            border: none;
+        /* Tips Card */
+        .tips-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 24px;
         }
 
-        .tip-title {
+        .tips-title {
+            font-size: 17px;
             font-weight: 700;
-            color: #444;
             margin-bottom: 12px;
-            display: flex;
-            align-items: center;
         }
 
-        .map-btn {
-            display: none;
+        .tips-content {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
         }
 
-        #map {
-            height: 450px;
-            width: 100%;
-            border-radius: 12px;
-            margin-top: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            z-index: 1;
+        .tips-content p {
+            margin-bottom: 8px;
         }
 
         /* Custom Map Markers */
@@ -193,269 +497,603 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: bold;
+            font-weight: 700;
             font-size: 12px;
             border-radius: 50%;
-            border: 2px solid white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         .marker-day1 {
-            background-color: #FF2E4D;
+            background-color: var(--day1-color);
         }
 
         .marker-day2 {
-            background-color: #FF9800;
+            background-color: var(--day2-color);
         }
 
         .marker-day3 {
-            background-color: #2196F3;
+            background-color: var(--day3-color);
         }
 
         .marker-day4 {
-            background-color: #9C27B0;
+            background-color: var(--day4-color);
         }
 
-        /* Map Legend */
-        .map-legend {
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            font-size: 12px;
-            line-height: 1.5;
+        .marker-user {
+            background-color: #34C759;
+            width: 32px !important;
+            height: 32px !important;
+            font-size: 16px;
+            animation: pulse 2s infinite;
         }
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 4px;
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(52, 199, 89, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(52, 199, 89, 0);
+            }
         }
 
-        .legend-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 6px;
+        /* Leaflet popup override */
+        .leaflet-popup-content-wrapper {
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .leaflet-popup-content {
+            margin: 12px 16px;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .map-panel {
+                height: 45vh;
+                min-height: 300px;
+            }
+
+            .content-panel {
+                width: 100%;
+                min-width: 0;
+                flex: 1;
+                border-left: none;
+                border-top: 0.5px solid var(--separator);
+            }
+
+            .map-legend {
+                bottom: 80px;
+                right: 12px;
+            }
+
+            .location-panel {
+                left: 12px;
+                right: 12px;
+                bottom: 20px;
+            }
+        }
+
+        /* Smooth scrollbar */
+        .content-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .content-panel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .content-panel::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 3px;
         }
     </style>
 </head>
 
 <body>
+    <!-- Navigation Header -->
+    <nav class="nav-header">
+        <div class="nav-content">
+            <a href="../index.html" class="back-btn">
+                <svg viewBox="0 0 20 20" fill="none">
+                    <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                返回
+            </a>
+            <div class="brand">
+                <span class="brand-icon">🌏</span>
+                <span>漫迹 Manji</span>
+            </div>
+        </div>
+    </nav>
 
-    <div class="header">
-        <h1>✨大连4天3晚✨</h1>
-        <p>Citywalk · 高颜值汤泉 · 绝美海景</p>
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Map Panel -->
+        <div class="map-panel">
+            <div id="map"></div>
+
+            <!-- Map Controls -->
+            <div class="map-controls">
+                <button class="map-control-btn" id="setLocationBtn" title="设置我的位置">📍</button>
+                <button class="map-control-btn" id="zoomInBtn" title="放大">+</button>
+                <button class="map-control-btn" id="zoomOutBtn" title="缩小">−</button>
+            </div>
+
+            <!-- Map Legend -->
+            <div class="map-legend">
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--day1-color)"></div>Day 1: 抵达 & 汤泉
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--day2-color)"></div>Day 2: 欧洲风情
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--day3-color)"></div>Day 3: 海景地标
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--day4-color)"></div>Day 4: Citywalk
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #34C759"></div>我的位置
+                </div>
+            </div>
+
+            <!-- Distance Panel -->
+            <div class="location-panel hidden" id="distancePanel">
+                <div class="location-panel-title">📏 直线距离</div>
+                <div class="distance-info">
+                    <span class="distance-value" id="distanceValue">0 米</span>
+                    <span class="destination-name" id="destinationName">→ 目的地</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Panel -->
+        <div class="content-panel">
+            <div class="content-inner">
+                <!-- Hero -->
+                <div class="trip-hero">
+                    <span class="trip-hero-badge">✨ Gemini 版本</span>
+                    <h1>大连4天3晚</h1>
+                    <p>Citywalk · 高颜值汤泉 · 绝美海景</p>
+                </div>
+
+                <!-- Day 1 -->
+                <section class="day-section" id="day1">
+                    <div class="day-header">
+                        <span class="day-badge day1">Day 1</span>
+                        <span class="day-title">周四 · 抵达 & 治愈泡汤</span>
+                    </div>
+
+                    <div class="location-card" data-lat="39.012" data-lng="121.456" data-name="大连北站">
+                        <div class="location-header">
+                            <div class="location-icon day1">🚄</div>
+                            <div>
+                                <div class="location-name">抵达大连北站</div>
+                                <div class="location-time">中午</div>
+                            </div>
+                        </div>
+                        <div class="location-desc">打车约30分钟前往酒店（比去市区近）。</div>
+                    </div>
+
+                    <div class="location-card" data-lat="38.960" data-lng="121.520" data-name="蔷萝花潭温泉度假酒店">
+                        <div class="location-header">
+                            <div class="location-icon day1">🛀</div>
+                            <div>
+                                <div class="location-name">蔷萝花潭·温泉度假酒店</div>
+                                <div class="location-time">入住</div>
+                            </div>
+                        </div>
+                        <div class="location-desc">
+                            <strong>为什么选这里：</strong> 2024/25小红书超火的高颜值汤泉。相比传统大澡堂，这里更像个艺术馆。<br>
+                            📸 <strong>必拍点：</strong> B1层的室外温泉（竹林环绕，氛围感绝了）、下沉式西餐区。
+                        </div>
+                        <div class="tags">
+                            <span class="tag hotel">新晋网红</span>
+                            <span class="tag photo">竹林私汤</span>
+                            <span class="tag relax">高颜值</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Day 2 -->
+                <section class="day-section" id="day2">
+                    <div class="day-header">
+                        <span class="day-badge day2">Day 2</span>
+                        <span class="day-title">周五 · 欧洲风情 & 橘子海</span>
+                    </div>
+
+                    <div class="location-card" data-lat="38.921" data-lng="121.639" data-name="洲际酒店">
+                        <div class="location-header">
+                            <div class="location-icon day2">🚕</div>
+                            <div>
+                                <div class="location-name">转场至洲际酒店</div>
+                                <div class="location-time">上午</div>
+                            </div>
+                        </div>
+                        <div class="location-desc">睡个自然醒，打车前往中山区洲际酒店（友好广场附近），寄存行李。位置绝佳，去哪都近。</div>
+                    </div>
+
+                    <div class="location-card" data-lat="38.867" data-lng="121.706" data-name="渔人码头">
+                        <div class="location-header">
+                            <div class="location-icon day2">🏰</div>
+                            <div>
+                                <div class="location-name">渔人码头 & 品海楼</div>
+                                <div class="location-time">中午</div>
+                            </div>
+                        </div>
+                        <div class="location-desc">
+                            午餐去 <strong
+                                style="color:var(--day1-color)">品海楼(老虎滩店)</strong>，独栋小洋楼，装修非常有格调。吃完直接逛<strong>渔人码头</strong>，这里有彩色房子和渔船，成片率100%。
+                        </div>
+                        <div class="tags">
+                            <span class="tag photo">电影感</span>
+                            <span class="tag food">必吃榜</span>
+                        </div>
+                    </div>
+
+                    <div class="location-card" data-lat="38.870" data-lng="121.660" data-name="琥珀湾">
+                        <div class="location-header">
+                            <div class="location-icon day2">☕</div>
+                            <div>
+                                <div class="location-name">琥珀湾(Amber Bay)</div>
+                                <div class="location-time">下午</div>
+                            </div>
+                        </div>
+                        <div class="location-desc">
+                            目前大连最火的打卡地之一，被称为"小镰仓"。推荐 <strong>Sote Coffee</strong> 或
+                            <strong>Kangaroo</strong>，点杯咖啡看海，非常chill。
+                        </div>
+                        <div class="tags">
+                            <span class="tag photo">网红打卡地</span>
+                            <span class="tag relax">看海下午茶</span>
+                        </div>
+                    </div>
+
+                    <div class="location-card" data-lat="38.922" data-lng="121.667" data-name="东港威尼斯水城">
+                        <div class="location-header">
+                            <div class="location-icon day2">🌃</div>
+                            <div>
+                                <div class="location-name">东港威尼斯水城</div>
+                                <div class="location-time">晚上</div>
+                            </div>
+                        </div>
+                        <div class="location-desc">夜景很美，随手拍都是大片。如果不累可以走走木栈道，吹吹海风。</div>
+                        <div class="tags">
+                            <span class="tag photo">夜景</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Day 3 -->
+                <section class="day-section" id="day3">
+                    <div class="day-header">
+                        <span class="day-badge day3">Day 3</span>
+                        <span class="day-title">周六 · 浪漫地标 & 海鲜大餐</span>
+                    </div>
+
+                    <div class="location-card" data-lat="38.8811" data-lng="121.5828" data-name="星海广场">
+                        <div class="location-header">
+                            <div class="location-icon day3">🕊️</div>
+                            <div>
+                                <div class="location-name">星海广场 & 跨海大桥</div>
+                                <div class="location-time">上午</div>
+                            </div>
+                        </div>
+                        <div class="location-desc">
+                            一定要去喂海鸥！可以拍到跨海大桥的壮观背景。建议穿浅色衣服颜色更搭。
+                        </div>
+                        <div class="tags">
+                            <span class="tag photo">地标</span>
+                            <span class="tag relax">喂海鸥</span>
+                        </div>
+                    </div>
+
+                    <div class="location-card" data-lat="38.882" data-lng="121.585" data-name="喜家德水饺">
+                        <div class="location-header">
+                            <div class="location-icon day3">🥟</div>
+                            <div>
+                                <div class="location-name">喜家德 / 日丰园海肠水饺</div>
+                                <div class="location-time">午餐</div>
+                            </div>
+                        </div>
+                        <div class="location-desc">
+                            来大连必吃水饺。如果想打卡"舌尖上的中国"推荐 <strong
+                                style="color:var(--day1-color)">日丰园</strong>，但比较远。市区里随便一家<strong>喜家德</strong>的虾仁水饺也绝不踩雷。
+                        </div>
+                        <div class="tags">
+                            <span class="tag food">地道</span>
+                        </div>
+                    </div>
+
+                    <div class="location-card" data-lat="38.870" data-lng="121.590" data-name="银沙滩">
+                        <div class="location-header">
+                            <div class="location-icon day3">🌉</div>
+                            <div>
+                                <div class="location-name">银沙滩 / 莲花山</div>
+                                <div class="location-time">下午</div>
+                            </div>
+                        </div>
+                        <div class="location-desc">
+                            去 <strong>银沙滩</strong> 看大桥的最佳视角。想看城市全景就上 <strong>莲花山观景台</strong>，那里有个网红咖啡厅。
+                        </div>
+                        <div class="tags">
+                            <span class="tag photo">全景机位</span>
+                        </div>
+                    </div>
+
+                    <div class="location-card" data-lat="38.910" data-lng="121.620" data-name="正黄旗海鲜烧烤">
+                        <div class="location-header">
+                            <div class="location-icon day3">🦞</div>
+                            <div>
+                                <div class="location-name">正黄旗海鲜烧烤</div>
+                                <div class="location-time">晚餐</div>
+                            </div>
+                        </div>
+                        <div class="location-desc">体验大连的烧烤文化，海鲜非常新鲜，氛围很热闹。</div>
+                        <div class="tags">
+                            <span class="tag food">大排档</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Day 4 -->
+                <section class="day-section" id="day4">
+                    <div class="day-header">
+                        <span class="day-badge day4">Day 4</span>
+                        <span class="day-title">周日 · Citywalk & 返程</span>
+                    </div>
+
+                    <div class="location-card" data-lat="38.915" data-lng="121.645" data-name="南山风情街">
+                        <div class="location-header">
+                            <div class="location-icon day4">🍂</div>
+                            <div>
+                                <div class="location-name">南山风情街 / 七七街</div>
+                                <div class="location-time">上午</div>
+                            </div>
+                        </div>
+                        <div class="location-desc">
+                            离洲际酒店很近。这里有大片保留完好的日式别墅，现在全是各种有格调的咖啡店和买手店。<br>
+                            推荐：<strong>A Cup of Cake</strong>, <strong>不二心包子</strong>(早餐)。
+                        </div>
+                        <div class="tags">
+                            <span class="tag photo">日式老洋房</span>
+                            <span class="tag relax">探店</span>
+                        </div>
+                    </div>
+
+                    <div class="location-card" data-lat="39.012" data-lng="121.456" data-name="大连北站">
+                        <div class="location-header">
+                            <div class="location-icon day4">👋</div>
+                            <div>
+                                <div class="location-name">返程</div>
+                                <div class="location-time">下午</div>
+                            </div>
+                        </div>
+                        <div class="location-desc">根据高铁时间前往大连北站/大连站，结束愉快的旅程。</div>
+                    </div>
+                </section>
+
+                <!-- Tips -->
+                <div class="tips-card">
+                    <div class="tips-title">💡 特种兵贴士</div>
+                    <div class="tips-content">
+                        <p><strong>👗 穿搭：</strong> 海边风大，建议叠穿。推荐白色、蓝色、卡其色系，和大海/老建筑很搭。</p>
+                        <p><strong>🚗 交通：</strong> 大连又称"打车之城"，起步价低，景点间打车很方便。不建议坐有轨电车赶时间。</p>
+                        <p><strong>☀️ 防晒：</strong> 千万别小看海边的紫外线，墨镜🕶️必备！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="container">
-        <!-- Day 1 -->
-        <div class="card">
-            <div>
-                <span class="day-badge">Day 1</span>
-                <span class="day-title">周四 · 抵达 & 治愈泡汤</span>
-            </div>
+    <script>
+        // Initialize map
+        const map = L.map('map', {
+            zoomControl: false
+        }).setView([38.92, 121.62], 12);
 
-            <div class="timeline-item">
-                <div class="timeline-icon"></div>
-                <div class="location-title">🚄 中午：抵达大连北站</div>
-                <div class="location-desc">打车约30分钟前往酒店（比去市区近）。</div>
-            </div>
+        L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+            maxZoom: 19,
+            subdomains: ['1', '2', '3', '4'],
+            attribution: '&copy; <a href="https://www.amap.com/">高德地图</a>'
+        }).addTo(map);
 
-            <div class="timeline-item">
-                <div class="timeline-icon"></div>
-                <div class="location-title">🛀 入住：蔷萝花潭·温泉度假酒店</div>
-                <div class="tags">
-                    <span class="tag hotel">新晋网红</span>
-                    <span class="tag photo">竹林私汤</span>
-                    <span class="tag relax">高颜值</span>
-                </div>
-                <div class="location-desc">
-                    <p><strong>为什么选这里：</strong> 2024/25小红书超火的高颜值汤泉。相比传统大澡堂，这里更像个艺术馆。</p>
-                    <p>📸 <strong>必拍点：</strong> B1层的室外温泉（竹林环绕，氛围感绝了）、下沉式西餐区（流水设计）。</p>
-                    <p>可以在这里舒舒服服泡个汤，吃个自助或西餐，拍出“在京都”的感觉。</p>
-                </div>
-            </div>
-        </div>
+        // Locations data
+        const locations = [
+            { name: "大连北站", coords: [39.012, 121.456], day: "Day 1", desc: "抵达 & 治愈泡汤", colorClass: "marker-day1", label: "D1" },
+            { name: "蔷萝花潭温泉度假酒店", coords: [38.960, 121.520], day: "Day 1", desc: "高颜值汤泉", colorClass: "marker-day1", label: "D1" },
+            { name: "洲际酒店", coords: [38.921, 121.639], day: "Day 2", desc: "友好广场, 位置绝佳", colorClass: "marker-day2", label: "D2" },
+            { name: "渔人码头", coords: [38.867, 121.706], day: "Day 2", desc: "彩色房子, 渔船", colorClass: "marker-day2", label: "D2" },
+            { name: "品海楼", coords: [38.868, 121.703], day: "Day 2", desc: "独栋小洋楼", colorClass: "marker-day2", label: "D2" },
+            { name: "琥珀湾", coords: [38.870, 121.660], day: "Day 2", desc: "小镰仓", colorClass: "marker-day2", label: "D2" },
+            { name: "东港威尼斯水城", coords: [38.922, 121.667], day: "Day 2", desc: "绝美夜景", colorClass: "marker-day2", label: "D2" },
+            { name: "星海广场", coords: [38.8811, 121.5828], day: "Day 3", desc: "喂海鸥", colorClass: "marker-day3", label: "D3" },
+            { name: "喜家德水饺", coords: [38.882, 121.585], day: "Day 3", desc: "虾仁水饺", colorClass: "marker-day3", label: "D3" },
+            { name: "银沙滩", coords: [38.870, 121.590], day: "Day 3", desc: "看大桥最佳视角", colorClass: "marker-day3", label: "D3" },
+            { name: "正黄旗海鲜烧烤", coords: [38.910, 121.620], day: "Day 3", desc: "海鲜烧烤", colorClass: "marker-day3", label: "D3" },
+            { name: "南山风情街", coords: [38.915, 121.645], day: "Day 4", desc: "日式老洋房", colorClass: "marker-day4", label: "D4" }
+        ];
 
-        <!-- Day 2 -->
-        <div class="card">
-            <div>
-                <span class="day-badge">Day 2</span>
-                <span class="day-title">周五 · 欧洲风情 & 橘子海</span>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-icon"></div>
-                <div class="location-title">🚕 上午：转场至洲际酒店</div>
-                <div class="location-desc">睡个自然醒，打车前往中山区洲际酒店（友好广场附近），寄存行李。位置绝佳，去哪都近。</div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-icon"></div>
-                <div class="location-title">🏰 中午：渔人码头 & 品海楼</div>
-                <div class="tags"><span class="tag photo">电影感</span><span class="tag food">必吃榜</span></div>
-                <div class="location-desc">
-                    午餐去 <strong style="color:var(--primary)">品海楼(老虎滩店)</strong>，独栋小洋楼，装修非常有格调。吃完直接逛
-                    <strong>渔人码头</strong>，这里有彩色房子和渔船，成片率100%。
-                </div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-icon"></div>
-                <div class="location-title">☕ 下午：琥珀湾(Amber Bay)</div>
-                <div class="tags"><span class="tag photo">网红打卡地</span><span class="tag relax">看海下午茶</span></div>
-                <div class="location-desc">
-                    目前大连最火的打卡地之一，被称为“小镰仓”。推荐 <strong>Sote Coffee</strong> 或 <strong>Kangaroo</strong>，点杯咖啡看海，非常chill。
-                </div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-icon"></div>
-                <div class="location-title">🌃 晚上：东港威尼斯水城</div>
-                <div class="location-desc">
-                    夜景很美，随手拍都是大片。如果不累可以走走木栈道，吹吹海风。
-                </div>
-            </div>
-        </div>
-
-        <!-- Day 3 -->
-        <div class="card">
-            <div>
-                <span class="day-badge">Day 3</span>
-                <span class="day-title">周六 · 浪漫地标 & 海鲜大餐</span>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-icon"></div>
-                <div class="location-title">🕊️ 上午：星海广场 & 跨海大桥</div>
-                <div class="location-desc">
-                    一定要去喂海鸥！可以拍到跨海大桥的壮观背景。建议穿浅色衣服颜色更搭。
-                </div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-icon"></div>
-                <div class="location-title">🥟 午餐：喜家德 / 日丰园海肠水饺</div>
-                <div class="tags"><span class="tag food">地道</span></div>
-                <div class="location-desc">
-                    来大连必吃水饺。如果想打卡“舌尖上的中国”推荐 <strong style="color:var(--primary)">日丰园</strong>，但比较远。市区里随便一家
-                    <strong>喜家德</strong> 的虾仁水饺也绝不踩雷。
-                </div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-icon"></div>
-                <div class="location-title">🌉 下午：银沙滩 / 莲花山</div>
-                <div class="tags"><span class="tag photo">全景机位</span></div>
-                <div class="location-desc">
-                    去 <strong>银沙滩</strong> 看大桥的最佳视角（可以搜“大连森林动物园南门”附近）。想看城市全景就上 <strong>莲花山观景台</strong>，那里有个网红咖啡厅。
-                </div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-icon"></div>
-                <div class="location-title">🦞 晚餐：正黄旗海鲜烧烤</div>
-                <div class="tags"><span class="tag food">大排档</span></div>
-                <div class="location-desc">
-                    体验大连的烧烤文化，海鲜非常新鲜，氛围很热闹。
-                </div>
-            </div>
-        </div>
-
-        <!-- Day 4 -->
-        <div class="card">
-            <div>
-                <span class="day-badge">Day 4</span>
-                <span class="day-title">周日 · Citywalk & 返程</span>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-icon"></div>
-                <div class="location-title">🍂 上午：南山风情街 / 七七街</div>
-                <div class="tags"><span class="tag photo">日式老洋房</span><span class="tag relax">探店</span></div>
-                <div class="location-desc">
-                    离洲际酒店很近。这里有大片保留完好的日式别墅，现在全是各种有格调的咖啡店和买手店。
-                    <br>推荐：<strong>A Cup of Cake</strong>, <strong>不二心包子</strong>(早餐)。在这里散步非常舒服。
-                </div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-icon"></div>
-                <div class="location-title">👋 下午：返程</div>
-                <div class="location-desc">
-                    根据高铁时间前往大连北站/大连站，结束愉快的旅程。
-                </div>
-            </div>
-        </div>
-
-        <div class="card tip-card">
-            <div class="tip-title">💡 特种兵贴士</div>
-            <div style="font-size: 14px; color: #555;">
-                <p><strong>👗 穿搭：</strong> 海边风大，建议叠穿。推荐白色、蓝色、卡其色系，和大海/老建筑很搭。</p>
-                <p><strong>🚗 交通：</strong> 大连又称“打车之城”，起步价低，景点间打车很方便。不建议坐有轨电车赶时间（虽然拍照好看）。</p>
-                <p><strong>☀️ 防晒：</strong> 千万别小看海边的紫外线，墨镜🕶️必备！</p>
-            </div>
-        </div>
-
-        <div id="map"></div>
-        <script>
-            // Initialize map centered on Dalian
-            var map = L.map('map').setView([38.92, 121.62], 12);
-
-            L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
-                maxZoom: 19,
-                subdomains: ['1', '2', '3', '4'],
-                attribution: '&copy; <a href="https://www.amap.com/">高德地图</a>'
-            }).addTo(map);
-
-            // Locations data
-            var locations = [
-                { name: "大连北站", coords: [39.022, 121.635], day: "Day 1", desc: "抵达 & 治愈泡汤", colorClass: "marker-day1", label: "D1" },
-                { name: "蔷萝花潭·温泉度假酒店", coords: [38.960, 121.520], day: "Day 1", desc: "高颜值汤泉", colorClass: "marker-day1", label: "D1" },
-                { name: "洲际酒店", coords: [38.921, 121.639], day: "Day 2", desc: "友好广场, 位置绝佳", colorClass: "marker-day2", label: "D2" },
-                { name: "渔人码头", coords: [38.875, 121.685], day: "Day 2", desc: "彩色房子, 渔船", colorClass: "marker-day2", label: "D2" },
-                { name: "品海楼", coords: [38.876, 121.682], day: "Day 2", desc: "独栋小洋楼", colorClass: "marker-day2", label: "D2" },
-                { name: "琥珀湾 (Amber Bay)", coords: [38.870, 121.660], day: "Day 2", desc: "Sote Coffee, 小镰仓", colorClass: "marker-day2", label: "D2" },
-                { name: "东港威尼斯水城", coords: [38.922, 121.667], day: "Day 2", desc: "绝美夜景", colorClass: "marker-day2", label: "D2" },
-                { name: "星海广场", coords: [38.881, 121.583], day: "Day 3", desc: "喂海鸥", colorClass: "marker-day3", label: "D3" },
-                { name: "星海湾跨海大桥", coords: [38.866, 121.580], day: "Day 3", desc: "壮观背景", colorClass: "marker-day3", label: "D3" },
-                { name: "喜家德水饺 (星海)", coords: [38.882, 121.585], day: "Day 3", desc: "虾仁水饺", colorClass: "marker-day3", label: "D3" },
-                { name: "银沙滩", coords: [38.870, 121.590], day: "Day 3", desc: "看大桥最佳视角", colorClass: "marker-day3", label: "D3" },
-                { name: "莲花山观景台", coords: [38.890, 121.600], day: "Day 3", desc: "城市全景", colorClass: "marker-day3", label: "D3" },
-                { name: "正黄旗海鲜烧烤", coords: [38.910, 121.620], day: "Day 3", desc: "海鲜烧烤", colorClass: "marker-day3", label: "D3" },
-                { name: "南山风情街", coords: [38.915, 121.645], day: "Day 4", desc: "日式老洋房", colorClass: "marker-day4", label: "D4" },
-                { name: "七七街", coords: [38.912, 121.648], day: "Day 4", desc: "Citywalk, A Cup of Cake", colorClass: "marker-day4", label: "D4" }
-            ];
-
-            locations.forEach(function (loc) {
-                var icon = L.divIcon({
-                    className: 'custom-marker ' + loc.colorClass,
-                    html: loc.label,
-                    iconSize: [24, 24],
-                    iconAnchor: [12, 12]
-                });
-
-                L.marker(loc.coords, { icon: icon }).addTo(map)
-                    .bindPopup("<b>" + loc.name + "</b><br>" + loc.day + ": " + loc.desc);
+        // Add markers to map
+        const markers = {};
+        locations.forEach(loc => {
+            const icon = L.divIcon({
+                className: 'custom-marker ' + loc.colorClass,
+                html: loc.label,
+                iconSize: [26, 26],
+                iconAnchor: [13, 13]
             });
 
-            // Add Legend
-            var legend = L.control({ position: 'bottomright' });
-            legend.onAdd = function (map) {
-                var div = L.DomUtil.create('div', 'map-legend');
-                div.innerHTML += '<div class="legend-item"><div class="legend-color" style="background:#FF2E4D"></div>Day 1</div>';
-                div.innerHTML += '<div class="legend-item"><div class="legend-color" style="background:#FF9800"></div>Day 2</div>';
-                div.innerHTML += '<div class="legend-item"><div class="legend-color" style="background:#2196F3"></div>Day 3</div>';
-                div.innerHTML += '<div class="legend-item"><div class="legend-color" style="background:#9C27B0"></div>Day 4</div>';
-                return div;
-            };
-            legend.addTo(map);
-        </script>
-        <div style="text-align:center; margin-top:10px; font-size:12px; color:#999;">Made for Xiaohongshu Lovers ❤️
-        </div>
-    </div>
+            const marker = L.marker(loc.coords, { icon: icon }).addTo(map)
+                .bindPopup(`<b>${loc.name}</b><br>${loc.day}: ${loc.desc}`);
 
+            markers[loc.name] = { marker, coords: loc.coords };
+        });
+
+        // User location handling
+        let userMarker = null;
+        let distanceLine = null;
+        let isSettingLocation = false;
+
+        const setLocationBtn = document.getElementById('setLocationBtn');
+        const distancePanel = document.getElementById('distancePanel');
+        const distanceValue = document.getElementById('distanceValue');
+        const destinationName = document.getElementById('destinationName');
+
+        setLocationBtn.addEventListener('click', () => {
+            isSettingLocation = !isSettingLocation;
+            setLocationBtn.classList.toggle('active', isSettingLocation);
+
+            if (isSettingLocation) {
+                map.getContainer().style.cursor = 'crosshair';
+            } else {
+                map.getContainer().style.cursor = '';
+            }
+        });
+
+        map.on('click', (e) => {
+            if (!isSettingLocation) return;
+
+            const { lat, lng } = e.latlng;
+
+            if (userMarker) {
+                map.removeLayer(userMarker);
+            }
+
+            const userIcon = L.divIcon({
+                className: 'custom-marker marker-user',
+                html: '📍',
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            });
+
+            userMarker = L.marker([lat, lng], { icon: userIcon })
+                .addTo(map)
+                .bindPopup('<b>我的位置</b>');
+
+            isSettingLocation = false;
+            setLocationBtn.classList.remove('active');
+            map.getContainer().style.cursor = '';
+
+            localStorage.setItem('userLocation', JSON.stringify({ lat, lng }));
+        });
+
+        // Load saved user location
+        const savedLocation = localStorage.getItem('userLocation');
+        if (savedLocation) {
+            const { lat, lng } = JSON.parse(savedLocation);
+            const userIcon = L.divIcon({
+                className: 'custom-marker marker-user',
+                html: '📍',
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            });
+            userMarker = L.marker([lat, lng], { icon: userIcon })
+                .addTo(map)
+                .bindPopup('<b>我的位置</b>');
+        }
+
+        // Calculate distance
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distance = R * c;
+
+            if (distance < 1) {
+                return (distance * 1000).toFixed(0) + ' 米';
+            }
+            return distance.toFixed(2) + ' 公里';
+        }
+
+        function showDistance(destLat, destLng, destName) {
+            if (!userMarker) {
+                distancePanel.classList.add('hidden');
+                return;
+            }
+
+            const userLatLng = userMarker.getLatLng();
+            const distance = calculateDistance(userLatLng.lat, userLatLng.lng, destLat, destLng);
+
+            distanceValue.textContent = distance;
+            destinationName.textContent = '→ ' + destName;
+            distancePanel.classList.remove('hidden');
+
+            if (distanceLine) {
+                map.removeLayer(distanceLine);
+            }
+
+            distanceLine = L.polyline([
+                [userLatLng.lat, userLatLng.lng],
+                [destLat, destLng]
+            ], {
+                color: '#007AFF',
+                weight: 3,
+                dashArray: '8, 8',
+                opacity: 0.8
+            }).addTo(map);
+        }
+
+        // Location card click handlers
+        document.querySelectorAll('.location-card').forEach(card => {
+            card.addEventListener('click', function () {
+                const lat = parseFloat(this.dataset.lat);
+                const lng = parseFloat(this.dataset.lng);
+                const name = this.dataset.name;
+
+                document.querySelectorAll('.location-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+
+                map.flyTo([lat, lng], 15, {
+                    duration: 0.8,
+                    easeLinearity: 0.25
+                });
+
+                showDistance(lat, lng, name);
+
+                const markerData = markers[name];
+                if (markerData) {
+                    markerData.marker.openPopup();
+                }
+            });
+        });
+
+        // Zoom controls
+        document.getElementById('zoomInBtn').addEventListener('click', () => map.zoomIn());
+        document.getElementById('zoomOutBtn').addEventListener('click', () => map.zoomOut());
+
+        map.on('click', (e) => {
+            if (!isSettingLocation) {
+                setTimeout(() => {
+                    if (!e.originalEvent.defaultPrevented && document.querySelector('.leaflet-popup')) {
+                    } else if (!isSettingLocation) {
+                        distancePanel.classList.add('hidden');
+                        if (distanceLine) {
+                            map.removeLayer(distanceLine);
+                            distanceLine = null;
+                        }
+                    }
+                }, 100);
+            }
+        });
+    </script>
 </body>
 
 </html>
