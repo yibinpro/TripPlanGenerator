@@ -1,12 +1,9 @@
-const fs = require('fs');
-const path = require('path');
-
-const template = (data) => `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${data.title} - 漫迹 Manji</title>
+    <title>福州+泉州+汕头 特种兵 - 漫迹 Manji</title>
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -266,7 +263,7 @@ const template = (data) => `<!DOCTYPE html>
     <div class="sidebar">
         <div class="header">
             <a href="../duanwu_comparison.html" class="back-btn">← 返回对比页</a>
-            <h1 class="title">${data.title}</h1>
+            <h1 class="title">福州+泉州+汕头 特种兵</h1>
             <p style="color: var(--text-secondary); font-size: 14px; margin-top: 8px;">端午机酒打卡与美食拍摄路线</p>
         </div>
         
@@ -277,10 +274,10 @@ const template = (data) => `<!DOCTYPE html>
 
     <div class="map-container">
         <div class="weather-badge">
-            <span class="weather-icon">${data.weatherIcon}</span>
+            <span class="weather-icon">🌤️</span>
             <div>
                 <div style="color:var(--text-secondary); font-size:11px;">端午气象预测</div>
-                <div style="color:var(--text-primary);">${data.weatherText}</div>
+                <div style="color:var(--text-primary);">25-30℃ 沿海湿润，偶尔阵雨</div>
             </div>
         </div>
         <div id="map"></div>
@@ -293,7 +290,7 @@ const template = (data) => `<!DOCTYPE html>
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        const tripData = ${JSON.stringify(data.days)};
+        const tripData = [{"day":"Day 1 (6月18日) - 福州初遇，三坊七巷","events":[{"time":"机票预订","title":"✈️ 点击查询去程机票","desc":"上海飞福州：<a href='https://flights.ctrip.com/online/list/oneway-sha-foc?_=1&depdate=2026-06-18' target='_blank'>携程搜索 (约 ¥500-800)</a><br>北京飞福州：<a href='https://flights.ctrip.com/online/list/oneway-bjs-foc?_=1&depdate=2026-06-18' target='_blank'>携程搜索 (约 ¥800-1200)</a>"},{"time":"12:00","title":"落地福州长乐机场","desc":"长乐机场落地后乘坐机场大巴或打车前往市区（约50分钟）。","lat":25.932,"lng":119.664},{"time":"14:00","title":"👗 换新中式","desc":"入住后换上新中式或旗袍，准备出门去老街逛吃。"},{"time":"15:00","title":"🏡 三坊七巷","desc":"在青石板巷子里拍照，极具明清古建筑之美。必吃【同利肉燕】和【永和鱼丸】。","lat":26.085,"lng":119.296},{"time":"18:00","title":"🍜 福州捞化","desc":"晚餐去吃地道的福州捞化（高汤煮米粉配内脏/海鲜），鲜美无比。","lat":26.08,"lng":119.3},{"time":"20:00","title":"🌉 上下杭夜景","desc":"去上下杭历史文化街区看夜景，古桥流水人家，非常有感觉。","lat":26.058,"lng":119.308}]},{"day":"Day 2 (6月19日) - 泉州簪花，仙气飘飘","events":[{"time":"09:00","title":"🚄 极速转场","desc":"福州站乘坐高铁前往泉州站，仅需 1 小时。","lat":26.115,"lng":119.317},{"time":"11:00","title":"🌸 蟳埔村簪花围","desc":"抵达泉州直奔蟳埔村，做一套非遗“簪花围”，换上蚵壳厝前的碎花马面裙，化身赵丽颖同款大片主角。","lat":24.861,"lng":118.636},{"time":"14:00","title":"🛕 开元寺红墙","desc":"前往开元寺，在著名的红墙下拍照，非常有质感。","lat":24.92,"lng":118.58},{"time":"16:00","title":"🍜 西街逛吃","desc":"沿着西街一路吃：【面线糊】加醋肉大肠，再来一碗冰凉的【四果汤】解暑。","lat":24.918,"lng":118.58},{"time":"20:00","title":"📸 钟楼打卡","desc":"在泉州地标白色的钟楼前拍夜景。","lat":24.917,"lng":118.587}]},{"day":"Day 3 (6月20日) - 汕头生腌，牛肉火锅","events":[{"time":"09:30","title":"🚄 再次转场","desc":"泉州站乘高铁前往汕头站（约 1.5 小时），正式进入广东吃货领地。","lat":24.957,"lng":118.544},{"time":"12:00","title":"🥩 潮汕牛肉火锅","desc":"抵达汕头后直奔【八合里海记】或【杏花吴记】，吊龙、五花趾烫几秒就吃，人间美味。","lat":23.367,"lng":116.702},{"time":"14:30","title":"🏝️ 南澳岛环岛","desc":"下午包车或租车去南澳岛，换上清爽的碎花海滩裙，去灯塔和海边吹风拍照。","lat":23.428,"lng":117.027},{"time":"19:00","title":"🦀 潮汕生腌","desc":"晚餐挑战“潮汕毒药”生腌（生腌虾、蟹、血蚶），配上一锅白粥。","lat":23.37,"lng":116.69}]},{"day":"Day 4 (6月21日) - 港风复古与返程","events":[{"time":"10:00","title":"🏛️ 汕头小公园","desc":"睡醒前往小公园骑楼建筑群，这里非常适合穿复古港风吊带裙拍照。","lat":23.359,"lng":116.671},{"time":"12:00","title":"🥤 鸭屎香与肠粉","desc":"喝一杯正宗的【鸭屎香柠檬茶】，吃一份潮汕抽屉式肠粉。","lat":23.36,"lng":116.673},{"time":"14:00","title":"✈️ 揭阳潮汕机场返程","desc":"打车前往机场。","lat":23.544,"lng":116.505},{"time":"机票预订","title":"✈️ 点击查询返程机票","desc":"揭阳飞上海：<a href='https://flights.ctrip.com/online/list/oneway-swa-sha?_=1&depdate=2026-06-21' target='_blank'>携程搜索 (约 ¥700-1100)</a><br>揭阳飞北京：<a href='https://flights.ctrip.com/online/list/oneway-swa-bjs?_=1&depdate=2026-06-21' target='_blank'>携程搜索 (约 ¥900-1500)</a>"}]}];
         
         let map;
         let markers = [];
@@ -343,14 +340,14 @@ const template = (data) => `<!DOCTYPE html>
                 allLocations.forEach((loc, index) => {
                     const icon = L.divIcon({
                         className: 'custom-marker',
-                        html: \`<span>\${loc.globalIndex}</span>\`,
+                        html: `<span>${loc.globalIndex}</span>`,
                         iconSize: [32, 32],
                         iconAnchor: [16, 16]
                     });
 
                     const marker = L.marker([loc.lat, loc.lng], { icon })
                         .addTo(map)
-                        .bindPopup(\`<div style="font-family:'Inter'; text-align:center;"><b>\${loc.title}</b><br><span style="color:#4f46e5;font-weight:bold;">\${loc.time}</span></div>\`);
+                        .bindPopup(`<div style="font-family:'Inter'; text-align:center;"><b>${loc.title}</b><br><span style="color:#4f46e5;font-weight:bold;">${loc.time}</span></div>`);
                     
                     marker.locData = loc;
                     marker.index = index;
@@ -377,21 +374,21 @@ const template = (data) => `<!DOCTYPE html>
             let html = '';
             
             tripData.forEach((day, dIdx) => {
-                html += \`<div class="day-header">📅 \${day.day}</div>\`;
+                html += `<div class="day-header">📅 ${day.day}</div>`;
                 
                 day.events.forEach((ev, eIdx) => {
                     const hasMap = ev.lat && ev.lng;
-                    const mapProps = hasMap ? \`onclick="focusLocation(\${ev.globalIndex - 1}, this)"\` : '';
+                    const mapProps = hasMap ? `onclick="focusLocation(${ev.globalIndex - 1}, this)"` : '';
                     const cursorStyle = hasMap ? 'cursor: pointer;' : 'cursor: default;';
-                    const numBadge = hasMap ? \`<span style="background: var(--primary-light); color: var(--primary); padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: auto;">📍 \${ev.globalIndex}</span>\` : '';
+                    const numBadge = hasMap ? `<span style="background: var(--primary-light); color: var(--primary); padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: auto;">📍 ${ev.globalIndex}</span>` : '';
 
-                    html += \`
-                        <div class="location-card" \${mapProps} style="\${cursorStyle}">
-                            <div class="time-badge">\${ev.time}</div>
-                            <div class="loc-title">\${ev.title} \${numBadge}</div>
-                            <div class="loc-desc">\${ev.desc}</div>
+                    html += `
+                        <div class="location-card" ${mapProps} style="${cursorStyle}">
+                            <div class="time-badge">${ev.time}</div>
+                            <div class="loc-title">${ev.title} ${numBadge}</div>
+                            <div class="loc-desc">${ev.desc}</div>
                         </div>
-                    \`;
+                    `;
                 });
             });
             
@@ -430,85 +427,4 @@ const template = (data) => `<!DOCTYPE html>
         window.onload = initApp;
     </script>
 </body>
-</html>`;
-
-const cities = [
-    {
-        filename: 'chiangmai.html',
-        title: "泰国清迈吃喝打卡",
-        weatherIcon: "🌦️",
-        weatherText: "22-32℃ 高温高湿，完美适配法式夏装",
-        days: [
-            { day: "Day 1 (6月18日) - 直飞相聚，夜市吃喝", events: [
-                { time: "机票预订", title: "✈️ 点击查询真实机票价格", desc: "上海飞清迈：<a href='https://flights.ctrip.com/online/list/oneway-sha-cnx?_=1&depdate=2026-06-18' target='_blank'>携程搜索 (约 ¥1500-2200)</a><br>北京飞清迈：<a href='https://flights.ctrip.com/online/list/oneway-bjs-cnx?_=1&depdate=2026-06-18' target='_blank'>携程搜索 (约 ¥1800-2600)</a>" },
-                { time: "21:30", title: "落地清迈国际机场", desc: "双城几乎同时落地，丝滑出关。", lat: 18.766, lng: 98.962 },
-                { time: "22:30", title: "入住宁曼路商圈", desc: "前往高颜值精品酒店，放下行李换上清凉装。", lat: 18.796, lng: 98.966 },
-                { time: "23:00", title: "🍜 午夜街头美食", desc: "打卡宁曼路夜市，吃一盘刚炒出来的 Pad Thai (泰式炒粉) 和椰子冰淇淋！", lat: 18.798, lng: 98.967 }
-            ]},
-            { day: "Day 2 (6月19日) - 法式风情大片，米其林美食", events: [
-                { time: "10:00", title: "👗 穿搭指南", desc: "今天的主题是慵懒度假风，换上法式碎花茶歇裙和编织草帽。" },
-                { time: "11:00", title: "☕ Roast8ry 冠军拉花", desc: "去宁曼路最火的网红咖啡馆喝拿铁，店面极简工业风，适合拍冷艳系大片。", lat: 18.797, lng: 98.968 },
-                { time: "13:00", title: "🍜 Kao Soy Nimman", desc: "午餐吃米其林必比登推荐的“泰北咖喱面”，浓郁椰香辣味极其过瘾。", lat: 18.799, lng: 98.968 },
-                { time: "15:30", title: "鸽子与红砖", desc: "前往【塔佩门】，买一包鸟食喂鸽子，红墙背景加上飞舞的鸽群，闭眼出大片。", lat: 18.788, lng: 98.993 },
-                { time: "18:00", title: "🍖 凤飞飞猪脚饭", desc: "就在古城北门，坐在塑料小板凳上吃最出名的猪脚饭，感受烟火气。", lat: 18.795, lng: 98.986 }
-            ]},
-            { day: "Day 3 (6月20日) - 泰服写真与雨林晚宴", events: [
-                { time: "10:30", title: "👗 泰服变装", desc: "在古城找店租借传统泰服（带华丽首饰），盘发造型。" },
-                { time: "11:00", title: "🛕 契迪龙寺写真", desc: "穿着泰服在沧桑的古老佛塔前拍照，形成强烈的岁月对比感。", lat: 18.786, lng: 98.986 },
-                { time: "14:00", title: "双龙寺俯瞰", desc: "包双条车上素贴山，金碧辉煌的双龙寺非常震撼。", lat: 18.804, lng: 98.921 },
-                { time: "18:30", title: "🥗 黑森林餐厅晚宴", desc: "去 Khaomao-Khaofang 黑森林餐厅，整个餐厅建在瀑布和热带植物间，边听流水边吃泰式大餐。", lat: 18.729, lng: 98.923 }
-            ]},
-            { day: "Day 4 (6月21日) - 伴手礼与返程", events: [
-                { time: "10:30", title: "🛍️ MAYA 商场扫货", desc: "去 MAYA 做最后的血拼，买泰国网红化妆品、小老板海苔、鼻通。", lat: 18.802, lng: 98.967 },
-                { time: "12:30", title: "🍗 烤鸡大餐", desc: "吃 Cherng Doi Roast Chicken 脆皮烤鸡配木瓜沙拉。", lat: 18.796, lng: 98.970 },
-                { time: "15:00", title: "✈️ 清迈机场返程", desc: "打车前往机场，带着几百张精修大片返回京沪。", lat: 18.766, lng: 98.962 }
-            ]}
-        ]
-    },
-    {
-        filename: 'fujian_guangdong.html',
-        title: "福州+泉州+汕头 特种兵",
-        weatherIcon: "🌤️",
-        weatherText: "25-30℃ 沿海湿润，偶尔阵雨",
-        days: [
-            { day: "Day 1 (6月18日) - 福州初遇，三坊七巷", events: [
-                { time: "机票预订", title: "✈️ 点击查询去程机票", desc: "上海飞福州：<a href='https://flights.ctrip.com/online/list/oneway-sha-foc?_=1&depdate=2026-06-18' target='_blank'>携程搜索 (约 ¥500-800)</a><br>北京飞福州：<a href='https://flights.ctrip.com/online/list/oneway-bjs-foc?_=1&depdate=2026-06-18' target='_blank'>携程搜索 (约 ¥800-1200)</a>" },
-                { time: "12:00", title: "落地福州长乐机场", desc: "长乐机场落地后乘坐机场大巴或打车前往市区（约50分钟）。", lat: 25.932, lng: 119.664 },
-                { time: "14:00", title: "👗 换新中式", desc: "入住后换上新中式或旗袍，准备出门去老街逛吃。" },
-                { time: "15:00", title: "🏡 三坊七巷", desc: "在青石板巷子里拍照，极具明清古建筑之美。必吃【同利肉燕】和【永和鱼丸】。", lat: 26.085, lng: 119.296 },
-                { time: "18:00", title: "🍜 福州捞化", desc: "晚餐去吃地道的福州捞化（高汤煮米粉配内脏/海鲜），鲜美无比。", lat: 26.080, lng: 119.300 },
-                { time: "20:00", title: "🌉 上下杭夜景", desc: "去上下杭历史文化街区看夜景，古桥流水人家，非常有感觉。", lat: 26.058, lng: 119.308 }
-            ]},
-            { day: "Day 2 (6月19日) - 泉州簪花，仙气飘飘", events: [
-                { time: "09:00", title: "🚄 极速转场", desc: "福州站乘坐高铁前往泉州站，仅需 1 小时。", lat: 26.115, lng: 119.317 },
-                { time: "11:00", title: "🌸 蟳埔村簪花围", desc: "抵达泉州直奔蟳埔村，做一套非遗“簪花围”，换上蚵壳厝前的碎花马面裙，化身赵丽颖同款大片主角。", lat: 24.861, lng: 118.636 },
-                { time: "14:00", title: "🛕 开元寺红墙", desc: "前往开元寺，在著名的红墙下拍照，非常有质感。", lat: 24.920, lng: 118.580 },
-                { time: "16:00", title: "🍜 西街逛吃", desc: "沿着西街一路吃：【面线糊】加醋肉大肠，再来一碗冰凉的【四果汤】解暑。", lat: 24.918, lng: 118.580 },
-                { time: "20:00", title: "📸 钟楼打卡", desc: "在泉州地标白色的钟楼前拍夜景。", lat: 24.917, lng: 118.587 }
-            ]},
-            { day: "Day 3 (6月20日) - 汕头生腌，牛肉火锅", events: [
-                { time: "09:30", title: "🚄 再次转场", desc: "泉州站乘高铁前往汕头站（约 1.5 小时），正式进入广东吃货领地。", lat: 24.957, lng: 118.544 },
-                { time: "12:00", title: "🥩 潮汕牛肉火锅", desc: "抵达汕头后直奔【八合里海记】或【杏花吴记】，吊龙、五花趾烫几秒就吃，人间美味。", lat: 23.367, lng: 116.702 },
-                { time: "14:30", title: "🏝️ 南澳岛环岛", desc: "下午包车或租车去南澳岛，换上清爽的碎花海滩裙，去灯塔和海边吹风拍照。", lat: 23.428, lng: 117.027 },
-                { time: "19:00", title: "🦀 潮汕生腌", desc: "晚餐挑战“潮汕毒药”生腌（生腌虾、蟹、血蚶），配上一锅白粥。", lat: 23.370, lng: 116.690 }
-            ]},
-            { day: "Day 4 (6月21日) - 港风复古与返程", events: [
-                { time: "10:00", title: "🏛️ 汕头小公园", desc: "睡醒前往小公园骑楼建筑群，这里非常适合穿复古港风吊带裙拍照。", lat: 23.359, lng: 116.671 },
-                { time: "12:00", title: "🥤 鸭屎香与肠粉", desc: "喝一杯正宗的【鸭屎香柠檬茶】，吃一份潮汕抽屉式肠粉。", lat: 23.360, lng: 116.673 },
-                { time: "14:00", title: "✈️ 揭阳潮汕机场返程", desc: "打车前往机场。", lat: 23.544, lng: 116.505 },
-                { time: "机票预订", title: "✈️ 点击查询返程机票", desc: "揭阳飞上海：<a href='https://flights.ctrip.com/online/list/oneway-swa-sha?_=1&depdate=2026-06-21' target='_blank'>携程搜索 (约 ¥700-1100)</a><br>揭阳飞北京：<a href='https://flights.ctrip.com/online/list/oneway-swa-bjs?_=1&depdate=2026-06-21' target='_blank'>携程搜索 (约 ¥900-1500)</a>" }
-            ]}
-        ]
-    }
-];
-
-const outDir = path.join(__dirname, 'duanwu');
-if (!fs.existsSync(outDir)) {
-    fs.mkdirSync(outDir, { recursive: true });
-}
-
-cities.forEach(city => {
-    const html = template(city);
-    fs.writeFileSync(path.join(outDir, city.filename), html);
-    console.log(`Generated ${city.filename}`);
-});
+</html>
