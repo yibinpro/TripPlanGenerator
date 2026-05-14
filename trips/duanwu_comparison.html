@@ -5,24 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>端午假期目的地对比 | 漫迹 Manji</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #ec4899;
-            --bg-primary: #f8fafc;
-            --bg-card: #ffffff;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
+            --primary: #818cf8;
+            --primary-dark: #6366f1;
+            --secondary: #f472b6;
+            --accent: #2dd4bf;
+            --bg-primary: #020617;
+            --bg-secondary: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.4);
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
             --text-tertiary: #94a3b8;
-            --border: #e2e8f0;
-            --glass-bg: rgba(255, 255, 255, 0.72);
-            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(129, 140, 248, 0.3);
+            --glass-bg: rgba(2, 6, 23, 0.7);
+            --gradient-1: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+            --gradient-2: linear-gradient(135deg, #f472b6 0%, #fb7185 100%);
+            --gradient-3: linear-gradient(135deg, #2dd4bf 0%, #06b6d4 100%);
         }
 
         * {
@@ -37,7 +39,63 @@
             background-color: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
-            padding-top: 80px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Orbs */
+        .bg-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: #4f46e5;
+            top: -200px;
+            left: -100px;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: #ec4899;
+            bottom: -100px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: #0ea5e9;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
         }
 
         /* Navigation Header */
@@ -51,70 +109,93 @@
             backdrop-filter: saturate(180%) blur(20px);
             -webkit-backdrop-filter: saturate(180%) blur(20px);
             border-bottom: 1px solid var(--border);
-            padding: 16px 20px;
+            padding: 16px 40px;
+            transition: all 0.3s ease;
         }
 
         .nav-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-primary);
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .back-btn {
             display: flex;
             align-items: center;
-            gap: 4px;
-            color: var(--primary);
-            font-size: 16px;
+            gap: 8px;
+            color: var(--text-primary);
+            font-size: 15px;
             font-weight: 600;
             text-decoration: none;
-            transition: opacity 0.2s ease;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
         }
 
         .back-btn:hover {
-            opacity: 0.7;
-        }
-
-        .back-btn svg {
-            width: 20px;
-            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-4px);
         }
 
         /* Hero Section */
         .hero {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 140px 20px 60px;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
 
         .hero-badge {
-            display: inline-block;
-            background: rgba(99, 102, 241, 0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(129, 140, 248, 0.15);
+            border: 1px solid rgba(129, 140, 248, 0.3);
             color: var(--primary);
-            padding: 8px 16px;
+            padding: 8px 20px;
             border-radius: 100px;
             font-size: 14px;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 0 20px rgba(129, 140, 248, 0.2);
+            animation: pulse-glow 2s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            from { box-shadow: 0 0 10px rgba(129, 140, 248, 0.1); }
+            to { box-shadow: 0 0 25px rgba(129, 140, 248, 0.4); }
         }
 
         .hero-title {
-            font-size: clamp(32px, 5vw, 48px);
-            font-weight: 800;
-            margin-bottom: 16px;
-            letter-spacing: -1px;
+            font-size: clamp(40px, 6vw, 64px);
+            font-weight: 900;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+        
+        .hero-title span {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero-subtitle {
@@ -122,10 +203,11 @@
             color: var(--text-secondary);
             max-width: 600px;
             margin: 0 auto;
+            font-weight: 400;
         }
 
         .hero-context {
-            margin-top: 24px;
+            margin-top: 40px;
             display: inline-flex;
             gap: 16px;
             flex-wrap: wrap;
@@ -135,47 +217,92 @@
         .context-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: white;
-            padding: 8px 16px;
-            border-radius: 12px;
-            box-shadow: var(--shadow-sm);
-            font-size: 14px;
-            font-weight: 500;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 600;
             border: 1px solid var(--border);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .context-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
         }
 
         /* Comparison Grid */
         .comparison-container {
-            max-width: 1200px;
-            margin: 0 auto 80px;
+            max-width: 1300px;
+            margin: 0 auto 100px;
             padding: 0 20px;
+            position: relative;
+            z-index: 1;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 32px;
         }
 
         .card {
             background: var(--bg-card);
-            border-radius: 24px;
-            padding: 32px;
-            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 28px;
+            padding: 36px;
             border: 1px solid var(--border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: card-appear 0.6s backwards;
+        }
+        
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+        .card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes card-appear {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.06), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
         }
 
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary);
+            transform: translateY(-8px);
+            border-color: var(--border-hover);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(129, 140, 248, 0.1);
         }
 
-        .card.top-pick::before {
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card.top-pick {
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.6) 0%, rgba(30, 41, 59, 0.4) 100%);
+            border: 1px solid rgba(129, 140, 248, 0.4);
+            box-shadow: inset 0 0 20px rgba(129, 140, 248, 0.05);
+        }
+
+        .card.top-pick::after {
             content: '';
             position: absolute;
             top: 0;
@@ -189,124 +316,183 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 2;
         }
 
         .destination-name {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 8px;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
         }
 
         .destination-tags {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
         .tag {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 6px;
-            background: #f1f5f9;
-            color: var(--text-secondary);
+            padding: 6px 14px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .tag.highlight {
+            background: rgba(129, 140, 248, 0.15);
+            color: var(--primary);
+            border-color: rgba(129, 140, 248, 0.3);
         }
 
         .recommendation {
-            font-size: 20px;
+            font-size: 22px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
         }
 
         .feature-list {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 24px;
+            flex-grow: 1;
+            position: relative;
+            z-index: 2;
         }
 
         .feature-item {
             display: flex;
-            gap: 12px;
+            gap: 16px;
             align-items: flex-start;
         }
 
         .feature-icon {
-            font-size: 20px;
-            background: #f8fafc;
-            width: 36px;
-            height: 36px;
+            font-size: 22px;
+            background: rgba(255, 255, 255, 0.05);
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 10px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
             flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        
+        .card:hover .feature-icon {
+            transform: scale(1.1) rotate(-5deg);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .feature-content h4 {
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
         }
 
         .feature-content p {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-secondary);
-            line-height: 1.5;
+            line-height: 1.6;
         }
         
         .conclusion {
-            max-width: 800px;
-            margin: 40px auto 0;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
-            border-radius: 20px;
-            padding: 32px;
+            max-width: 900px;
+            margin: 60px auto 0;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 48px;
             text-align: center;
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), inset 0 0 40px rgba(129, 140, 248, 0.05);
+            position: relative;
+            overflow: hidden;
         }
         
+        .conclusion::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--gradient-1);
+            opacity: 0.05;
+            z-index: 0;
+        }
+        
+        .conclusion-content {
+            position: relative;
+            z-index: 1;
+        }
+
         .conclusion h3 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--primary-dark);
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
         }
         
         .conclusion p {
             color: var(--text-secondary);
-            font-size: 15px;
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        .conclusion strong {
+            color: var(--text-primary);
+            font-weight: 700;
         }
 
         @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
+            .grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 36px; }
+            .conclusion { padding: 32px 20px; }
         }
     </style>
 </head>
 
 <body>
+    <!-- Animated Background -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
     <!-- Navigation Header -->
-    <nav class="nav-header">
+    <nav class="nav-header" id="navbar">
         <div class="nav-content">
             <a href="../index.html" class="back-btn">
                 <svg viewBox="0 0 20 20" fill="none">
-                    <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
+                    <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                返回
+                返回首页
             </a>
             <div class="brand">
-                <span>🌏 漫迹 Manji</span>
+                🌏 Manji
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <div class="hero">
-        <span class="hero-badge">AI 旅行分析</span>
-        <h1 class="hero-title">端午假期目的地对比分析</h1>
-        <p class="hero-subtitle">基于上海和北京双城出发、轻松度假、女生穿搭拍照四大维度的深度评测</p>
+        <div class="hero-badge">✨ AI 独家旅行分析</div>
+        <h1 class="hero-title">端午假期 <span>目的地全景解析</span></h1>
+        <p class="hero-subtitle">我们从“异地出发、轻松度假、绝美穿搭拍照”三大痛点出发，为你带来最硬核的6地横评。</p>
         
         <div class="hero-context">
             <div class="context-item">📅 6月18日 - 6月21日</div>
@@ -317,7 +503,7 @@
 
     <!-- Comparison Grid -->
     <div class="comparison-container">
-        <div class="grid">
+        <div class="grid" id="cards-grid">
             
             <!-- Card 1: 泉州+潮州 -->
             <div class="card top-pick">
@@ -325,8 +511,8 @@
                     <div>
                         <h2 class="destination-name">福建泉州 + 广东潮州</h2>
                         <div class="destination-tags">
-                            <span class="tag">首选推荐</span>
-                            <span class="tag">美食文化</span>
+                            <span class="tag highlight">🏆 绝对首推</span>
+                            <span class="tag">文化美食</span>
                         </div>
                     </div>
                     <div class="recommendation">🌟🌟🌟🌟🌟</div>
@@ -335,29 +521,29 @@
                     <li class="feature-item">
                         <div class="feature-icon">✈️</div>
                         <div class="feature-content">
-                            <h4>航班与交通</h4>
-                            <p>京沪双城飞晋江/揭阳航班极多，极易协调同时落地。双城间高铁仅需1-2小时，无缝衔接。往返约1000-2000元。</p>
+                            <h4>完美会师</h4>
+                            <p>京沪双城飞晋江/揭阳航班极多，极易协调同时落地。双城间高铁仅需1-2小时，无缝衔接。往返仅约1000-2000元。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">💆‍♀️</div>
                         <div class="feature-content">
-                            <h4>疲劳指数：中等偏轻松</h4>
-                            <p>古城内以步行为主(日均步数较高)，但吃喝店铺密集，走两步就能坐下喝糖水/吃小吃，随时休息。</p>
+                            <h4>吃喝式走马观花</h4>
+                            <p>古城内以步行为主，但满大街都是糖水铺和特色小吃，走两步就能坐下大快朵颐，随时补血。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">👗</div>
                         <div class="feature-content">
-                            <h4>小裙子适宜度：完美</h4>
-                            <p>天气炎热，非常适合夏日小裙子。只需注意准备一双舒适的平底鞋搭配。</p>
+                            <h4>小裙子天堂</h4>
+                            <p>天气炎热，非常适合夏日小裙子。只需注意准备一双舒适的平底鞋搭配古城的石板路。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">📷</div>
                         <div class="feature-content">
-                            <h4>拍照与穿搭</h4>
-                            <p>泉州必体验蟳埔女"簪花围"；古城适合新中式、轻盈棉麻长裙；潮州牌坊街适合复古旗袍或优雅长裙。</p>
+                            <h4>出片率 100%</h4>
+                            <p>泉州必体验蟳埔女"簪花围"，新中式、轻盈棉麻长裙；潮州牌坊街适合复古旗袍，怎么拍怎么美。</p>
                         </div>
                     </li>
                 </ul>
@@ -369,8 +555,8 @@
                     <div>
                         <h2 class="destination-name">泰国清迈</h2>
                         <div class="destination-tags">
-                            <span class="tag">最轻松</span>
-                            <span class="tag">出国首选</span>
+                            <span class="tag highlight">躺平天花板</span>
+                            <span class="tag">异国度假</span>
                         </div>
                     </div>
                     <div class="recommendation">🌟🌟🌟🌟🌟</div>
@@ -379,29 +565,29 @@
                     <li class="feature-item">
                         <div class="feature-icon">✈️</div>
                         <div class="feature-content">
-                            <h4>航班与交通</h4>
+                            <h4>跨国也便利</h4>
                             <p>上海和北京均有直飞或便捷转机，约5小时，往返1500-2500元。双城抵达时间非常容易对齐。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">💆‍♀️</div>
                         <div class="feature-content">
-                            <h4>疲劳指数：极度轻松</h4>
-                            <p>主打按摩SPA、泡咖啡馆、逛夜市。打车极便宜(Grab/Bolt)，基本不用走路，真正的躺平度假。</p>
+                            <h4>极致的松弛感</h4>
+                            <p>主打按摩SPA、泡咖啡馆、逛夜市。打车极便宜，出门全靠轮子，真正的躺平度假模式。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">👗</div>
                         <div class="feature-content">
-                            <h4>小裙子适宜度：极高</h4>
-                            <p>6月气温28-32℃，虽是雨季但多为傍晚阵雨，每天都能尽情穿各种夏日小裙子。</p>
+                            <h4>完美适配吊带裙</h4>
+                            <p>6月气温28-32℃，虽是雨季但多为傍晚阵雨，每天都能尽情换上色彩鲜艳的热带小裙子。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">📷</div>
                         <div class="feature-content">
-                            <h4>拍照与穿搭</h4>
-                            <p>色彩鲜艳的热带长裙、法式茶歇裙、编织草帽，或是租借一套泰服在寺庙拍照，极其出片。</p>
+                            <h4>慵懒法式风</h4>
+                            <p>法式茶歇裙、编织草帽，或是去塔佩门喂鸽子，或是租一套绝美泰服在寺庙留影，高级感拉满。</p>
                         </div>
                     </li>
                 </ul>
@@ -413,8 +599,7 @@
                     <div>
                         <h2 class="destination-name">越南胡志明市</h2>
                         <div class="destination-tags">
-                            <span class="tag">法式风情</span>
-                            <span class="tag">异国Citywalk</span>
+                            <span class="tag">东方小巴黎</span>
                         </div>
                     </div>
                     <div class="recommendation">🌟🌟🌟🌟</div>
@@ -423,29 +608,29 @@
                     <li class="feature-item">
                         <div class="feature-icon">✈️</div>
                         <div class="feature-content">
-                            <h4>航班与交通</h4>
+                            <h4>直飞无忧</h4>
                             <p>京沪均有直飞航班(约4.5-5.5小时)，往返约1500-3000元，协调时间相对容易。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">💆‍♀️</div>
                         <div class="feature-content">
-                            <h4>疲劳指数：轻松</h4>
-                            <p>第一郡景点集中(红教堂、邮局、美术馆)，适合休闲Citywalk，累了就钻进独栋咖啡馆喝冰咖啡。</p>
+                            <h4>咖啡馆避暑</h4>
+                            <p>第一郡景点极度集中，适合休闲Citywalk，走累了就钻进独栋法式咖啡馆喝一杯冰滴咖啡。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">👗</div>
                         <div class="feature-content">
-                            <h4>小裙子适宜度：极高</h4>
-                            <p>气候湿热，夏日小裙子绝对是主力，完全不需要厚重衣物。</p>
+                            <h4>夏装主力军</h4>
+                            <p>气候湿热，轻薄的夏装小裙子绝对是主力，完全不需要携带厚重衣物。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">📷</div>
                         <div class="feature-content">
-                            <h4>拍照与穿搭</h4>
-                            <p>充满法式殖民色彩的建筑群，非常适合法式复古长裙、优雅风，或是租借当地传统服饰奥黛。</p>
+                            <h4>法式优雅</h4>
+                            <p>充满法式殖民色彩的建筑群，非常适合法式复古长裙，或是租借当地传统服饰奥黛，极具异国情调。</p>
                         </div>
                     </li>
                 </ul>
@@ -457,8 +642,7 @@
                     <div>
                         <h2 class="destination-name">云南芒市 + 腾冲</h2>
                         <div class="destination-tags">
-                            <span class="tag">异域风情</span>
-                            <span class="tag">避暑</span>
+                            <span class="tag">避暑秘境</span>
                         </div>
                     </div>
                     <div class="recommendation">🌟🌟🌟🌟</div>
@@ -467,29 +651,29 @@
                     <li class="feature-item">
                         <div class="feature-icon">✈️</div>
                         <div class="feature-content">
-                            <h4>航班与交通</h4>
-                            <p>直飞较少，通常需昆明转机，往返约1500-3000元。京沪双城协调同时间到达需花点心思对齐中转航班。</p>
+                            <h4>中转大考验</h4>
+                            <p>直飞较少，通常需昆明转机，往返约1500-3000元。双城协调同时间到达需花点心思对齐中转航班。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">💆‍♀️</div>
                         <div class="feature-content">
-                            <h4>疲劳指数：中等</h4>
-                            <p>景点间有一定距离，包车/打车为主，但整体节奏慢，不会像特种兵一样赶景点。</p>
+                            <h4>慢节奏漫游</h4>
+                            <p>景点间有一定距离，包车或打车为主，但整体节奏极慢，不会像特种兵一样赶景点。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">👗</div>
                         <div class="feature-content">
-                            <h4>小裙子适宜度：良好</h4>
-                            <p>芒市较热适合夏装小裙子；但腾冲非常凉快(20℃左右)，早晚可能需要加件薄外套搭配。</p>
+                            <h4>冰火两重天</h4>
+                            <p>芒市较热适合夏装小裙子；但腾冲非常凉快(20℃左右)，早晚必须备一件薄外套防寒。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">📷</div>
                         <div class="feature-content">
-                            <h4>拍照与穿搭</h4>
-                            <p>芒市大金塔适合东南亚风情长裙/傣族服饰；腾冲和顺古镇适合新中式、棉麻材质的文艺穿搭。</p>
+                            <h4>东南亚与新中式</h4>
+                            <p>芒市大金塔适合东南亚风情长裙/傣族服饰；腾冲和顺古镇更适合新中式、棉麻材质的文艺穿搭。</p>
                         </div>
                     </li>
                 </ul>
@@ -499,10 +683,9 @@
             <div class="card">
                 <div class="card-header">
                     <div>
-                        <h2 class="destination-name">贵州 (贵阳/荔波/西江)</h2>
+                        <h2 class="destination-name">贵州全线</h2>
                         <div class="destination-tags">
-                            <span class="tag">自然山水</span>
-                            <span class="tag">民族特色</span>
+                            <span class="tag">天然氧吧</span>
                         </div>
                     </div>
                     <div class="recommendation">🌟🌟🌟</div>
@@ -511,29 +694,29 @@
                     <li class="feature-item">
                         <div class="feature-icon">✈️</div>
                         <div class="feature-content">
-                            <h4>航班与交通</h4>
-                            <p>飞贵阳班次极多，价格便宜(往返800-1500元)，京沪协调时间极度容易。</p>
+                            <h4>白菜价机票</h4>
+                            <p>飞贵阳班次极多，价格便宜(往返800-1500元)，京沪协调时间极度容易，闭眼买。</p>
                         </div>
                     </li>
                     <li class="feature-item">
-                        <div class="feature-icon">💆‍♀️</div>
+                        <div class="feature-icon">🧗‍♀️</div>
                         <div class="feature-content">
-                            <h4>疲劳指数：较累</h4>
-                            <p>贵州景点间车程长，且大量景区(黄果树、小七孔)需要爬山涉水，体力消耗大。</p>
+                            <h4>特种兵预警</h4>
+                            <p>贵州景点间车程长，且大量核心景区(黄果树、小七孔)需要深度爬山涉水，体力消耗巨大。</p>
                         </div>
                     </li>
                     <li class="feature-item">
-                        <div class="feature-icon">👗</div>
+                        <div class="feature-icon">👖</div>
                         <div class="feature-content">
-                            <h4>小裙子适宜度：一般</h4>
-                            <p>白天景区爬山不方便穿裙子，容易走光或被蚊虫叮咬；只有在苗寨等住宿地拍照时才适合换装。</p>
+                            <h4>告别小裙子</h4>
+                            <p>白天高强度爬山极不方便穿裙子，容易走光或被蚊虫叮咬；只能在苗寨等住宿地换装过把瘾。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">📷</div>
                         <div class="feature-content">
-                            <h4>拍照与穿搭</h4>
-                            <p>西江千户苗寨必拍绝美苗服写真；白天景区游览只能穿运动装或冲锋衣。</p>
+                            <h4>绝美苗服大片</h4>
+                            <p>西江千户苗寨必拍绝美苗服写真；但白天景区游览只能做个老老实实的运动冲锋衣女孩。</p>
                         </div>
                     </li>
                 </ul>
@@ -545,8 +728,7 @@
                     <div>
                         <h2 class="destination-name">张家界 + 长沙</h2>
                         <div class="destination-tags">
-                            <span class="tag">奇山异水</span>
-                            <span class="tag">吃货天堂</span>
+                            <span class="tag">吃苦与吃肉</span>
                         </div>
                     </div>
                     <div class="recommendation">🌟🌟</div>
@@ -555,29 +737,29 @@
                     <li class="feature-item">
                         <div class="feature-icon">✈️</div>
                         <div class="feature-content">
-                            <h4>航班与交通</h4>
-                            <p>飞长沙或高铁均极其方便，往返约800-1500元。双城协调完全没问题。</p>
+                            <h4>交通枢纽</h4>
+                            <p>飞长沙或高铁均极其方便，往返约800-1500元。双城会师完全没有任何阻力。</p>
                         </div>
                     </li>
                     <li class="feature-item">
-                        <div class="feature-icon">💆‍♀️</div>
+                        <div class="feature-icon">🥵</div>
                         <div class="feature-content">
-                            <h4>疲劳指数：极度疲惫</h4>
-                            <p>张家界是纯纯的特种兵爬山行程；长沙天气炎热、人多，网红店吃饭需要大量时间排队。</p>
+                            <h4>双重暴击</h4>
+                            <p>张家界是纯纯的特种兵极限拉练；长沙天气极热、人巨多，网红店吃饭需要超长待机排队。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">👗</div>
                         <div class="feature-content">
-                            <h4>小裙子适宜度：两极分化</h4>
-                            <p>长沙可以尽情穿小裙子；但张家界爬山绝对不适合穿裙子。</p>
+                            <h4>严重割裂</h4>
+                            <p>长沙可以做个火辣的都市丽人穿小裙子；但张家界爬山绝对、彻底地将裙装拒之门外。</p>
                         </div>
                     </li>
                     <li class="feature-item">
                         <div class="feature-icon">📷</div>
                         <div class="feature-content">
-                            <h4>拍照与穿搭</h4>
-                            <p>长沙适合辣妹装、Y2K风、街头风；张家界只能全套运动装备/山系穿搭。</p>
+                            <h4>Y2K vs 军训服</h4>
+                            <p>长沙街头适合辣妹装、Y2K风、街头风；一到张家界，立刻变身全套运动装备的山系生存指南。</p>
                         </div>
                     </li>
                 </ul>
@@ -586,12 +768,43 @@
         </div>
         
         <div class="conclusion">
-            <h3>🤖 总结建议</h3>
-            <p>基于你们的四大需求：<strong>最推荐【泉州+潮州】或【清迈】</strong>。<br><br>
-            如果想<strong>绝对躺平、换上漂亮长裙拍大片</strong>，选【清迈】不会错；如果对<strong>传统文化和极致美食</strong>更感兴趣，想要体验簪花围，【泉州+潮州】是国内不二之选。<br>
-            张家界和贵州因为需要大量爬山，与“不累”和“小裙子”的需求冲突较大，建议以后安排专项旅行。</p>
+            <div class="conclusion-content">
+                <h3>🤖 终端判决结果</h3>
+                <p>基于你们的四大苛刻需求：<br><br>
+                如果想<strong>不用动脑子、绝对躺平、且每天都能换上漂亮长裙拍大片</strong>，选 <strong>【清迈】</strong> 绝不踩雷。<br><br>
+                如果对<strong>传统文化和极致小吃</strong>更感兴趣，想要体验爆火的"簪花围"，<strong>【泉州+潮州】</strong> 是国内断层第一的选择。<br><br>
+                <strong>⚠️ 避雷指南：</strong>张家界和贵州因为需要大量爬山，与“不累”和“小裙子”的核心诉求存在不可调和的矛盾，建议本次直接放弃。</p>
+            </div>
         </div>
     </div>
+
+    <script>
+        // Interactive light tracking effect on cards
+        document.getElementById('cards-grid').onmousemove = e => {
+            for(const card of document.getElementsByClassName('card')) {
+                const rect = card.getBoundingClientRect(),
+                      x = e.clientX - rect.left,
+                      y = e.clientY - rect.top;
+                
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            }
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(2, 6, 23, 0.9)';
+                nav.style.borderBottom = '1px solid rgba(255, 255, 255, 0.15)';
+                nav.style.padding = '12px 40px';
+            } else {
+                nav.style.background = 'rgba(2, 6, 23, 0.7)';
+                nav.style.borderBottom = '1px solid rgba(255, 255, 255, 0.08)';
+                nav.style.padding = '16px 40px';
+            }
+        });
+    </script>
 </body>
 
 </html>
