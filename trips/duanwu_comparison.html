@@ -457,10 +457,196 @@
             font-weight: 700;
         }
 
+        /* Drawer Styles */
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .drawer-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 2001;
+            transition: right 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -20px 0 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .drawer.active {
+            right: 0;
+        }
+
+        .drawer-header {
+            padding: 32px 32px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, transparent 100%);
+        }
+
+        .drawer-title {
+            font-size: 24px;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .drawer-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .drawer-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .drawer-content {
+            padding: 32px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        /* Custom Scrollbar for Drawer */
+        .drawer-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .drawer-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .drawer-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        /* Timeline Styles */
+        .timeline-day {
+            margin-bottom: 40px;
+        }
+
+        .timeline-day-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 24px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 24px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 20px;
+            bottom: -24px;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-time {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 6px;
+        }
+
+        .timeline-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .card-btn {
+            margin-top: 24px;
+            width: 100%;
+            padding: 14px;
+            background: rgba(129, 140, 248, 0.1);
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            border-radius: 12px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 3;
+        }
+
+        .card-btn:hover {
+            background: rgba(129, 140, 248, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2);
+        }
+        
         @media (max-width: 768px) {
             .grid { grid-template-columns: 1fr; }
             .hero-title { font-size: 36px; }
             .conclusion { padding: 32px 20px; }
+            .drawer { max-width: 100%; }
         }
     </style>
 </head>
@@ -548,6 +734,7 @@
                         </div>
                     </li>
                 </ul>
+                <button class="card-btn" onclick="openDrawer('quanzhou')">查看详细行程 🕒</button>
             </div>
 
             <!-- Card 2: 清迈 -->
@@ -593,6 +780,7 @@
                         </div>
                     </li>
                 </ul>
+                <button class="card-btn" onclick="openDrawer('chiangmai')">查看详细行程 🕒</button>
             </div>
 
             <!-- Card 3: 胡志明 -->
@@ -637,6 +825,7 @@
                         </div>
                     </li>
                 </ul>
+                <button class="card-btn" onclick="openDrawer('hochiminh')">查看详细行程 🕒</button>
             </div>
 
             <!-- Card 4: 芒市+腾冲 -->
@@ -681,6 +870,7 @@
                         </div>
                     </li>
                 </ul>
+                <button class="card-btn" onclick="openDrawer('mangshi')">查看详细行程 🕒</button>
             </div>
 
             <!-- Card 5: 贵州 -->
@@ -725,6 +915,7 @@
                         </div>
                     </li>
                 </ul>
+                <button class="card-btn" onclick="openDrawer('guizhou')">查看详细行程 🕒</button>
             </div>
 
             <!-- Card 6: 张家界+长沙 -->
@@ -769,6 +960,7 @@
                         </div>
                     </li>
                 </ul>
+                <button class="card-btn" onclick="openDrawer('zhangjiajie')">查看详细行程 🕒</button>
             </div>
 
         </div>
@@ -781,6 +973,18 @@
                 如果对<strong>传统文化和极致小吃</strong>更感兴趣，想要体验爆火的"簪花围"，<strong>【泉州+潮州】</strong> 是国内断层第一的选择。<br><br>
                 <strong>⚠️ 避雷指南：</strong>张家界和贵州因为需要大量爬山，与“不累”和“小裙子”的核心诉求存在不可调和的矛盾，建议本次直接放弃。</p>
             </div>
+        </div>
+    </div>
+
+    <!-- Drawer Overlay & Container -->
+    <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+    <div class="drawer" id="side-drawer">
+        <div class="drawer-header">
+            <h2 class="drawer-title" id="drawer-title">详细行程</h2>
+            <button class="drawer-close" onclick="closeDrawer()">✕</button>
+        </div>
+        <div class="drawer-content" id="drawer-content">
+            <!-- Timeline will be injected here -->
         </div>
     </div>
 
@@ -810,6 +1014,319 @@
                 nav.style.padding = '16px 40px';
             }
         });
+
+        // Itinerary Data
+        const itineraries = {
+            quanzhou: {
+                title: "泉州+潮州 4天3晚",
+                days: [
+                    {
+                        day: "Day 1 (6月18日) - 双城集结，古城初探",
+                        events: [
+                            { time: "14:15", title: "✈️ 北京起飞", desc: "厦航MF8128，首都机场T3出发" },
+                            { time: "14:30", title: "✈️ 上海起飞", desc: "厦航MF8590，虹桥机场T2出发" },
+                            { time: "16:15", title: "🛬 落地晋江机场", desc: "两人几乎同时落地，机场汇合。打车约40分钟前往泉州古城西街附近民宿。" },
+                            { time: "17:30", title: "🏨 办理入住", desc: "稍作休整，换上轻便透气的夏装（棉麻裙或新中式）。" },
+                            { time: "18:30", title: "🍜 西街觅食", desc: "步行前往西街，品尝面线糊、四果汤、润饼。边吃边逛。" },
+                            { time: "20:00", title: "📸 钟楼夜景", desc: "在泉州标志性建筑钟楼打卡拍照，感受闽南夜生活。" }
+                        ]
+                    },
+                    {
+                        day: "Day 2 (6月19日) - 簪花大片，寻仙泉州",
+                        events: [
+                            { time: "09:30", title: "🌸 蟳埔村体验", desc: "打车前往蟳埔村，提前预约好簪花围体验馆。换上传统服饰或自带的素色裙子。" },
+                            { time: "10:30", title: "📸 簪花写真", desc: "在蚵壳厝前拍摄赵丽颖同款大片，感受非遗魅力。" },
+                            { time: "12:30", title: "🦀 海鲜午餐", desc: "在村落周边吃一顿地道的闽南海鲜大排档。" },
+                            { time: "15:00", title: "🛕 开元寺漫游", desc: "回到市区，游览开元寺、东西塔，在红墙下拍照极其出片。" },
+                            { time: "16:30", title: "☕ 咖啡续命", desc: "找一家西街的天台咖啡馆，喝着冰咖啡俯瞰古城日落。" },
+                            { time: "19:00", title: "🍲 牛排晚餐", desc: "去吃好成财牛排馆或阿秋牛排，体验特色中式牛排。" }
+                        ]
+                    },
+                    {
+                        day: "Day 3 (6月20日) - 潮州风情，牛肉火锅",
+                        events: [
+                            { time: "09:00", title: "🚄 高铁转场", desc: "泉州站至潮汕站，车程约1.5小时。" },
+                            { time: "11:30", title: "🏨 抵达潮州", desc: "打车前往潮州古城（牌坊街附近）办理入住。" },
+                            { time: "12:30", title: "🥩 牛肉火锅", desc: "打卡官塘兄弟牛肉店或阿彬牛肉火锅，大快朵颐。" },
+                            { time: "15:00", title: "🚶‍♀️ 牌坊街Citywalk", desc: "换上复古旗袍或优雅长裙，漫步牌坊街，吃腐乳饼、鸭母捻。" },
+                            { time: "18:00", title: "🌉 广济桥夜景", desc: "前往韩江边看广济桥，欣赏夜间灯光秀。" }
+                        ]
+                    },
+                    {
+                        day: "Day 4 (6月21日) - 悠闲返程",
+                        events: [
+                            { time: "09:00", title: "🍵 潮州早茶", desc: "睡到自然醒，体验地道的潮州早茶/肠粉。" },
+                            { time: "11:00", title: "🏯 开元寺/西湖", desc: "潮州开元寺祈福，或去潮州西湖散步。" },
+                            { time: "14:00", title: "🚕 前往机场", desc: "打车前往揭阳潮汕国际机场（约40分钟）。" },
+                            { time: "16:35", title: "✈️ 各自返程", desc: "上海: 春秋9C8958 (16:35)；北京: 南航CZ3861 (16:00)。愉快结束端午假期！" }
+                        ]
+                    }
+                ]
+            },
+            chiangmai: {
+                title: "泰国清迈 4天3晚",
+                days: [
+                    {
+                        day: "Day 1 (6月18日) - 双城集结，夜市初体验",
+                        events: [
+                            { time: "17:10", title: "✈️ 上海起飞", desc: "春秋航空 9C8511，浦东T2出发" },
+                            { time: "17:25", title: "✈️ 北京起飞", desc: "国航 CA823，首都T3出发" },
+                            { time: "21:30", title: "🛬 落地清迈", desc: "双城几乎同时落地，丝滑汇合，落地签或提前办好。" },
+                            { time: "22:30", title: "🏨 入住宁曼路", desc: "打车前往宁曼路商圈的高颜值精品酒店。" },
+                            { time: "23:00", title: "🍜 午夜狂欢", desc: "出门左转随便找个小夜市，吃一盘正宗的 Pad Thai 炒粉！" }
+                        ]
+                    },
+                    {
+                        day: "Day 2 (6月19日) - 慵懒法式风，塔佩门喂鸽",
+                        events: [
+                            { time: "10:00", title: "👗 睡醒换装", desc: "自然醒，换上准备好的法式茶歇裙和编织草帽。" },
+                            { time: "11:00", title: "☕ 咖啡馆早午餐", desc: "在 Roast8ry 或周边网绿咖啡馆吃 Brunch 拍大片。" },
+                            { time: "14:00", title: "🕊️ 塔佩门", desc: "打车前往塔佩门，红砖墙背景下喂鸽子拍照，超级出片。" },
+                            { time: "16:00", title: "💆‍♀️ 泰式马杀鸡", desc: "去 Let's Relax 或女子监狱按摩体验正宗泰式SPA，彻底放松。" },
+                            { time: "18:30", title: "🍖 凤飞飞猪脚饭", desc: "晚餐打卡著名的凤飞飞猪脚饭，随后逛周边夜市买点伴手礼。" }
+                        ]
+                    },
+                    {
+                        day: "Day 3 (6月20日) - 泰服体验，绝美双龙寺",
+                        events: [
+                            { time: "09:30", title: "👗 租借泰服", desc: "在古城找一家店租借绝美的传统泰服（约几百铢）。" },
+                            { time: "10:30", title: "🛕 契迪龙寺", desc: "穿泰服在契迪龙寺的古老遗迹前拍写真，高级感拉满。" },
+                            { time: "14:00", title: "🚕 双龙寺素贴山", desc: "包双条车上素贴山，俯瞰整个清迈城，金色的双龙寺极度震撼。" },
+                            { time: "18:00", title: "🥗 黑森林餐厅", desc: "晚餐在 Khaomao-Khaofang 黑森林餐厅，仿佛在热带雨林中就餐。" },
+                            { time: "21:00", title: "🥂 宁曼路微醺", desc: "回到宁曼路，找个 Livehouse 喝一杯热带鸡尾酒。" }
+                        ]
+                    },
+                    {
+                        day: "Day 4 (6月21日) - 最后的采购，依依惜别",
+                        events: [
+                            { time: "10:00", title: "🛍️ 玛雅商场", desc: "去 MAYA 商场做最后的血拼，买点泰国特色零食和化妆品。" },
+                            { time: "12:30", title: "🍛 咖喱面", desc: "午餐吃一碗泰北金面 (Khao Soi)，浓郁的椰香咖喱让人难忘。" },
+                            { time: "15:00", title: "🚕 奔赴机场", desc: "打车前往清迈国际机场（离市区非常近，15分钟即到）。" },
+                            { time: "17:30", title: "✈️ 各自返程", desc: "带着满满的照片和好心情，分别搭乘班机返回北京和上海。" }
+                        ]
+                    }
+                ]
+            },
+            hochiminh: {
+                title: "越南胡志明 4天3晚",
+                days: [
+                    {
+                        day: "Day 1 (6月18日) - 直飞相聚，法式初夜",
+                        events: [
+                            { time: "08:50", title: "✈️ 上海起飞", desc: "东航 MU281 直飞胡志明。" },
+                            { time: "08:30", title: "✈️ 北京起飞", desc: "南航 CZ8139 (经停广州)，中午时段落地新山一机场。" },
+                            { time: "13:30", title: "🏨 入住第一郡", desc: "打车前往第一郡市中心的法式复古精品酒店。" },
+                            { time: "15:00", title: "👗 换上夏装", desc: "越南极度湿热，换上清凉的吊带裙或短裙。" },
+                            { time: "16:00", title: "☕ 咖啡公寓", desc: "前往著名的“咖啡公寓”，找一间带阳台的店喝一杯越南冰滴咖啡。" },
+                            { time: "19:00", title: "🍜 范五老街", desc: "晚上体验胡志明著名的背包客街范五老街，吃一碗正宗越南河粉(Pho)。" }
+                        ]
+                    },
+                    {
+                        day: "Day 2 (6月19日) - 东方小巴黎 Citywalk",
+                        events: [
+                            { time: "09:30", title: "📸 统一宫", desc: "步行前往统一宫，感受历史气息。" },
+                            { time: "11:00", title: "⛪ 红教堂 & 邮局", desc: "打卡西贡圣母大教堂（红教堂）和百年中央邮局，极佳的法式拍照背景。" },
+                            { time: "12:30", title: "🥖 法棍午餐", desc: "买一个路边的越南法棍三明治 (Banh Mi)，便宜又美味。" },
+                            { time: "15:00", title: "🎨 胡志明美术馆", desc: "黄白相间的法式建筑，楼梯和走廊光影极美，出片圣地。" },
+                            { time: "18:00", title: "🥂 高空酒吧", desc: "前往 Chill Skybar 或 Saigon Saigon Rooftop Bar 俯瞰夜景。" }
+                        ]
+                    },
+                    {
+                        day: "Day 3 (6月20日) - 奥黛体验，粉红教堂",
+                        events: [
+                            { time: "10:00", title: "👗 定制/租借奥黛", desc: "在滨城市场或专卖店租一套越南传统服饰“奥黛”，勾勒身材曲线。" },
+                            { time: "11:30", title: "💒 粉红教堂", desc: "穿着奥黛前往耶稣圣心堂（粉红教堂），少女心爆棚，猛按快门。" },
+                            { time: "14:00", title: "🛍️ 滨城市场", desc: "体验当地市场，可以买些腰果、咖啡，记得疯狂砍价。" },
+                            { time: "16:30", title: "💆‍♀️ 越式洗头", desc: "体验网上很火的“越式全套洗头按摩”，解除两天的疲惫。" },
+                            { time: "19:00", title: "🚢 西贡河游船", desc: "晚上乘坐游船夜游西贡河，在船上享用越式大餐。" }
+                        ]
+                    },
+                    {
+                        day: "Day 4 (6月21日) - 最后的回味",
+                        events: [
+                            { time: "09:00", title: "☕ 滴漏咖啡", desc: "在酒店附近的小巷子里，像当地人一样坐在矮凳上喝一杯滴漏咖啡。" },
+                            { time: "11:00", title: "🛒 超市扫货", desc: "去超市购买 G7 咖啡、各种果干作为伴手礼。" },
+                            { time: "12:30", title: "🚕 前往机场", desc: "预留充足时间打车前往新山一国际机场。" },
+                            { time: "15:00", title: "✈️ 满载而归", desc: "搭乘下午的航班，顺利返回上海和北京。" }
+                        ]
+                    }
+                ]
+            },
+            mangshi: {
+                title: "芒市+腾冲 4天3晚",
+                days: [
+                    {
+                        day: "Day 1 (6月18日) - 昆明集结，初见芒市",
+                        events: [
+                            { time: "09:00", title: "✈️ 京沪起飞", desc: "双城分别搭乘早班机前往昆明长水机场。" },
+                            { time: "13:00", title: "🤝 昆明汇合", desc: "在昆明机场碰头，一起吃个过桥米线，转乘飞往芒市的航班。" },
+                            { time: "16:00", title: "🛬 抵达芒市", desc: "芒市气温较高，办理入住后换上轻薄凉快的夏装或东南亚风长裙。" },
+                            { time: "18:00", title: "🍛 傣族孔雀宴", desc: "晚餐体验手抓饭和孔雀宴，浓郁的傣族风味。" },
+                            { time: "20:00", title: "🛕 勐焕大金塔夜景", desc: "夜游大金塔，灯光下金碧辉煌，极具异域风情。" }
+                        ]
+                    },
+                    {
+                        day: "Day 2 (6月19日) - 芒市风情，转战腾冲",
+                        events: [
+                            { time: "09:30", title: "📸 银塔拍照", desc: "前往勐焕大银塔，白色的建筑非常适合拍东南亚度假大片。" },
+                            { time: "12:00", title: "🍜 泡鲁达与撒撇", desc: "吃一份解暑的泡鲁达，挑战一下柠檬撒撇。" },
+                            { time: "14:00", title: "🚗 包车去腾冲", desc: "包车前往腾冲，车程约2小时。注意腾冲气温会骤降至20度左右。" },
+                            { time: "16:30", title: "🧥 换季预警", desc: "抵达和顺古镇民宿，必须加一件薄外套或长袖衬衫。" },
+                            { time: "18:00", title: "♨️ 泡温泉", desc: "晚餐后去体验热海温泉或柏联温泉，洗去旅途疲惫。" }
+                        ]
+                    },
+                    {
+                        day: "Day 3 (6月20日) - 腾冲地热与和顺古镇",
+                        events: [
+                            { time: "09:00", title: "🌋 热海景区", desc: "游览腾冲热海，看壮观的“大滚锅”，体验地热熏蒸。" },
+                            { time: "12:30", title: "🥚 温泉煮蛋", desc: "品尝利用地热温泉水煮出来的鸡蛋和花生。" },
+                            { time: "15:00", title: "🚶‍♀️ 和顺古镇漫步", desc: "换上新中式或文艺风的棉麻裙，在和顺古镇的青石板路上闲逛。" },
+                            { time: "17:00", title: "☕ 稻田咖啡", desc: "找一家古镇边缘的稻田咖啡馆，看着绿油油的田野发呆。" },
+                            { time: "19:00", title: "🍲 铜瓢牛肉", desc: "晚餐一定要吃腾冲特色的铜瓢牛肉火锅，非常暖胃。" }
+                        ]
+                    },
+                    {
+                        day: "Day 4 (6月21日) - 悠然返程",
+                        events: [
+                            { time: "09:30", title: "🛶 湿地泛舟", desc: "前往北海湿地，体验“草上飞”的划船乐趣（视航班时间而定）。" },
+                            { time: "12:00", title: "🍜 腾冲饵丝", desc: "吃一碗热腾腾的腾冲饵丝作为告别餐。" },
+                            { time: "14:00", title: "🚕 腾冲/芒市机场", desc: "根据买到的返程航班，从腾冲驼峰机场或返回芒市起飞。" },
+                            { time: "16:00", title: "✈️ 经停返程", desc: "大部分需要经停/中转，晚上回到上海和北京。" }
+                        ]
+                    }
+                ]
+            },
+            guizhou: {
+                title: "贵州全线 4天3晚",
+                days: [
+                    {
+                        day: "Day 1 (6月18日) - 爽爽贵阳，无缝汇合",
+                        events: [
+                            { time: "09:55", title: "✈️ 北京起飞", desc: "国航 CA1461 早班机出发。" },
+                            { time: "10:15", title: "✈️ 上海起飞", desc: "南航 CZ3654 同步出发。" },
+                            { time: "13:00", title: "🛬 落地贵阳", desc: "几乎同时落地贵阳龙洞堡机场。打车前往市区酒店。" },
+                            { time: "14:30", title: "👖 特种兵着装", desc: "贵州多山，建议立刻换上冲锋衣或运动装+极度舒适的运动鞋。" },
+                            { time: "16:00", title: "🚶‍♀️ 黔灵山公园", desc: "去看超级便宜的黔灵山看猴子（注意保管财物）和熊猫。" },
+                            { time: "19:00", title: "🍲 肠旺面/酸汤鱼", desc: "打卡贵阳小吃，体验正宗的红酸汤鱼，极其开胃。" }
+                        ]
+                    },
+                    {
+                        day: "Day 2 (6月19日) - 瀑布震撼，体力大考",
+                        events: [
+                            { time: "07:30", title: "🚌 出发黄果树", desc: "早起，乘坐高铁或大巴前往安顺黄果树瀑布。" },
+                            { time: "10:00", title: "🌊 黄果树景区", desc: "开始特种兵徒步。游览陡坡塘、天星桥、大瀑布三个景区。" },
+                            { time: "14:00", title: "🧗‍♀️ 穿越水帘洞", desc: "穿上雨衣，穿越大瀑布背后的水帘洞，体力消耗巨大。" },
+                            { time: "18:00", title: "🚄 转场凯里", desc: "从安顺高铁站直接前往凯里南站（西江千户苗寨）。" },
+                            { time: "21:00", title: "夜宿苗寨", desc: "抵达苗寨民宿，累瘫，直接休息或简单吃点夜宵。" }
+                        ]
+                    },
+                    {
+                        day: "Day 3 (6月20日) - 苗寨写真，唯一的小裙子时刻",
+                        events: [
+                            { time: "10:00", title: "👗 苗服变装", desc: "睡到自然醒。终于迎来了换裙子的时刻！租一套华丽的银饰苗服。" },
+                            { time: "11:30", title: "📸 旅拍大片", desc: "在风雨桥、观景台疯狂拍照，苗寨非常适合出写真大片。" },
+                            { time: "14:00", title: "🍜 黑猪肉串", desc: "换回便装，品尝苗寨的黑毛猪肉串、竹筒饭。" },
+                            { time: "16:00", title: "🚕 包车去荔波", desc: "从苗寨包车/拼车前往荔波（车程较长，约3-4小时）。" },
+                            { time: "20:00", title: "🏨 入住荔波", desc: "抵达荔波县城入住，吃一顿荔波烤鱼补充体力。" }
+                        ]
+                    },
+                    {
+                        day: "Day 4 (6月21日) - 小七孔翡翠水",
+                        events: [
+                            { time: "08:00", title: "🏃‍♀️ 冲刺小七孔", desc: "为了避开人流早起入园，换上运动装继续拉练。" },
+                            { time: "09:00", title: "💧 卧龙潭瀑布", desc: "看绝美的绿宝石水色，游览水上森林、六十八级跌水瀑布。" },
+                            { time: "13:00", title: "🌉 小七孔古桥", desc: "在标志性的小七孔古桥打卡结束行程。" },
+                            { time: "15:00", title: "🚄 荔波高铁站", desc: "荔波现在通高铁了！直接坐高铁返回贵阳龙洞堡机场。" },
+                            { time: "18:00", title: "✈️ 各自返程", desc: "搭乘晚班机，带着酸痛的双腿和绝美照片返回京沪。" }
+                        ]
+                    }
+                ]
+            },
+            zhangjiajie: {
+                title: "张家界+长沙 4天3晚",
+                days: [
+                    {
+                        day: "Day 1 (6月18日) - 辣妹聚首长沙",
+                        events: [
+                            { time: "10:00", title: "✈️ 高铁/飞行", desc: "京沪出发，高铁最快4个多小时，或飞机直达黄花机场。" },
+                            { time: "14:00", title: "🏨 入住五一广场", desc: "打车到长沙宇宙中心五一广场/IFS国金中心附近入住。" },
+                            { time: "15:30", title: "👗 辣妹换装", desc: "长沙极度闷热！换上最辣的吊带、Y2K小裙子出街。" },
+                            { time: "16:00", title: "🧋 喝茶颜悦色", desc: "下楼第一件事：买一杯幽兰拿铁。" },
+                            { time: "18:00", title: "🦞 文和友/笨萝卜", desc: "开启排队模式，吃一顿地道的小龙虾或湘菜爆炒。" },
+                            { time: "21:00", title: "🌃 湘江夜游", desc: "去江边吹风，或者在解放西路感受长沙的夜生活不夜城。" }
+                        ]
+                    },
+                    {
+                        day: "Day 2 (6月19日) - 橘子洲头，转战张家界",
+                        events: [
+                            { time: "09:30", title: "📸 橘子洲", desc: "早起去橘子洲头，和毛爷爷雕像合影（必须提前预约小火车）。" },
+                            { time: "12:30", title: "🍜 嗦粉", desc: "吃一碗正宗的长沙米粉（肆姐面粉馆等）。" },
+                            { time: "14:00", title: "🚄 奔赴张家界", desc: "从长沙站坐城际列车/高铁前往张家界西站（约2-3小时）。" },
+                            { time: "17:00", title: "🧗‍♀️ 装备转换", desc: "抵达武陵源区入住，把小裙子收起来，准备好明天的全套登山装备。" },
+                            { time: "19:00", title: "🍲 三下锅", desc: "晚餐吃张家界特色“三下锅”，积蓄明天的爬山能量。" }
+                        ]
+                    },
+                    {
+                        day: "Day 3 (6月20日) - 纯纯的特种兵极限拉练",
+                        events: [
+                            { time: "07:30", title: "⛰️ 进山", desc: "早早进入张家界国家森林公园（武陵源标志门）。" },
+                            { time: "09:00", title: "🚡 百龙天梯", desc: "乘坐壮观的百龙天梯直达袁家界。" },
+                            { time: "10:30", title: "🪐 阿凡达悬浮山", desc: "参观哈利路亚山原型，感受大自然的鬼斧神工。" },
+                            { time: "13:00", title: "🚌 杨家界/天子山", desc: "继续高强度徒步，在各个观景台看石英砂岩峰林。" },
+                            { time: "17:00", title: "🚠 索道下山", desc: "腿已废，乘坐天子山索道下山返回客栈，直接秒睡。" }
+                        ]
+                    },
+                    {
+                        day: "Day 4 (6月21日) - 天门山玻璃栈道，惊险返程",
+                        events: [
+                            { time: "08:00", title: "🚡 天门山大索道", desc: "转战市区的天门山景区，乘坐亚洲最长的索道直接从城市上空穿过。" },
+                            { time: "10:00", title: "😱 玻璃栈道", desc: "体验悬崖峭壁上的玻璃栈道和鬼谷栈道。" },
+                            { time: "13:00", title: "🕳️ 天门洞", desc: "下999级天梯（或买穿山扶梯），近距离感受天门洞。" },
+                            { time: "16:00", title: "🚕 张家界荷花机场", desc: "打车直接去机场或高铁站。" },
+                            { time: "18:00", title: "✈️ 各自返程", desc: "结束痛并快乐着的特种兵之旅，返回北京和上海。" }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Drawer Logic
+        function openDrawer(cityKey) {
+            const data = itineraries[cityKey];
+            if (!data) return;
+
+            document.getElementById('drawer-title').innerText = data.title;
+            
+            let html = '';
+            data.days.forEach(day => {
+                html += `
+                    <div class="timeline-day">
+                        <div class="timeline-day-title">📅 ${day.day}</div>
+                `;
+                day.events.forEach(ev => {
+                    html += `
+                        <div class="timeline-item">
+                            <div class="timeline-time">${ev.time}</div>
+                            <div class="timeline-event-title">${ev.title}</div>
+                            <div class="timeline-desc">${ev.desc}</div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            });
+
+            document.getElementById('drawer-content').innerHTML = html;
+            
+            document.getElementById('drawer-overlay').classList.add('active');
+            document.getElementById('side-drawer').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeDrawer() {
+            document.getElementById('drawer-overlay').classList.remove('active');
+            document.getElementById('side-drawer').classList.remove('active');
+            document.body.style.overflow = '';
+        }
     </script>
 </body>
 
