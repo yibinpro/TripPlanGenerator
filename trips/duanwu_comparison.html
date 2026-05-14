@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>端午假期目的地对比 | 漫迹 Manji</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #94a3b8;
+            --border: #e2e8f0;
+            --glass-bg: rgba(255, 255, 255, 0.72);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+        /* Navigation Header */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 20px;
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .back-btn:hover {
+            opacity: 0.7;
+        }
+
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero-context {
+            margin-top: 24px;
+            display: inline-flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .context-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid var(--border);
+        }
+
+        /* Comparison Grid */
+        .comparison-container {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .card.top-pick::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .destination-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .destination-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: #f1f5f9;
+            color: var(--text-secondary);
+        }
+
+        .recommendation {
+            font-size: 20px;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .feature-icon {
+            font-size: 20px;
+            background: #f8fafc;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .feature-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .feature-content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .conclusion {
+            max-width: 800px;
+            margin: 40px auto 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        
+        .conclusion h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--primary-dark);
+        }
+        
+        .conclusion p {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Header -->
+    <nav class="nav-header">
+        <div class="nav-content">
+            <a href="../index.html" class="back-btn">
+                <svg viewBox="0 0 20 20" fill="none">
+                    <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                返回
+            </a>
+            <div class="brand">
+                <span>🌏 漫迹 Manji</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <span class="hero-badge">AI 旅行分析</span>
+        <h1 class="hero-title">端午假期目的地对比分析</h1>
+        <p class="hero-subtitle">基于上海和北京双城出发、轻松度假、女生穿搭拍照四大维度的深度评测</p>
+        
+        <div class="hero-context">
+            <div class="context-item">📅 6月18日 - 6月21日</div>
+            <div class="context-item">👥 两人同行</div>
+            <div class="context-item">🛫 上海 & 北京 出发</div>
+        </div>
+    </div>
+
+    <!-- Comparison Grid -->
+    <div class="comparison-container">
+        <div class="grid">
+            
+            <!-- Card 1: 泉州+潮州 -->
+            <div class="card top-pick">
+                <div class="card-header">
+                    <div>
+                        <h2 class="destination-name">福建泉州 + 广东潮州</h2>
+                        <div class="destination-tags">
+                            <span class="tag">首选推荐</span>
+                            <span class="tag">美食文化</span>
+                        </div>
+                    </div>
+                    <div class="recommendation">🌟🌟🌟🌟🌟</div>
+                </div>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">✈️</div>
+                        <div class="feature-content">
+                            <h4>航班与交通</h4>
+                            <p>京沪双城飞晋江/揭阳航班极多，极易协调同时落地。双城间高铁仅需1-2小时，无缝衔接。往返约1000-2000元。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">💆‍♀️</div>
+                        <div class="feature-content">
+                            <h4>疲劳指数：中等偏轻松</h4>
+                            <p>古城内以步行为主(日均步数较高)，但吃喝店铺密集，走两步就能坐下喝糖水/吃小吃，随时休息。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">👗</div>
+                        <div class="feature-content">
+                            <h4>小裙子适宜度：完美</h4>
+                            <p>天气炎热，非常适合夏日小裙子。只需注意准备一双舒适的平底鞋搭配。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">📷</div>
+                        <div class="feature-content">
+                            <h4>拍照与穿搭</h4>
+                            <p>泉州必体验蟳埔女"簪花围"；古城适合新中式、轻盈棉麻长裙；潮州牌坊街适合复古旗袍或优雅长裙。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 2: 清迈 -->
+            <div class="card top-pick">
+                <div class="card-header">
+                    <div>
+                        <h2 class="destination-name">泰国清迈</h2>
+                        <div class="destination-tags">
+                            <span class="tag">最轻松</span>
+                            <span class="tag">出国首选</span>
+                        </div>
+                    </div>
+                    <div class="recommendation">🌟🌟🌟🌟🌟</div>
+                </div>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">✈️</div>
+                        <div class="feature-content">
+                            <h4>航班与交通</h4>
+                            <p>上海和北京均有直飞或便捷转机，约5小时，往返1500-2500元。双城抵达时间非常容易对齐。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">💆‍♀️</div>
+                        <div class="feature-content">
+                            <h4>疲劳指数：极度轻松</h4>
+                            <p>主打按摩SPA、泡咖啡馆、逛夜市。打车极便宜(Grab/Bolt)，基本不用走路，真正的躺平度假。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">👗</div>
+                        <div class="feature-content">
+                            <h4>小裙子适宜度：极高</h4>
+                            <p>6月气温28-32℃，虽是雨季但多为傍晚阵雨，每天都能尽情穿各种夏日小裙子。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">📷</div>
+                        <div class="feature-content">
+                            <h4>拍照与穿搭</h4>
+                            <p>色彩鲜艳的热带长裙、法式茶歇裙、编织草帽，或是租借一套泰服在寺庙拍照，极其出片。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 3: 胡志明 -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h2 class="destination-name">越南胡志明市</h2>
+                        <div class="destination-tags">
+                            <span class="tag">法式风情</span>
+                            <span class="tag">异国Citywalk</span>
+                        </div>
+                    </div>
+                    <div class="recommendation">🌟🌟🌟🌟</div>
+                </div>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">✈️</div>
+                        <div class="feature-content">
+                            <h4>航班与交通</h4>
+                            <p>京沪均有直飞航班(约4.5-5.5小时)，往返约1500-3000元，协调时间相对容易。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">💆‍♀️</div>
+                        <div class="feature-content">
+                            <h4>疲劳指数：轻松</h4>
+                            <p>第一郡景点集中(红教堂、邮局、美术馆)，适合休闲Citywalk，累了就钻进独栋咖啡馆喝冰咖啡。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">👗</div>
+                        <div class="feature-content">
+                            <h4>小裙子适宜度：极高</h4>
+                            <p>气候湿热，夏日小裙子绝对是主力，完全不需要厚重衣物。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">📷</div>
+                        <div class="feature-content">
+                            <h4>拍照与穿搭</h4>
+                            <p>充满法式殖民色彩的建筑群，非常适合法式复古长裙、优雅风，或是租借当地传统服饰奥黛。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 4: 芒市+腾冲 -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h2 class="destination-name">云南芒市 + 腾冲</h2>
+                        <div class="destination-tags">
+                            <span class="tag">异域风情</span>
+                            <span class="tag">避暑</span>
+                        </div>
+                    </div>
+                    <div class="recommendation">🌟🌟🌟🌟</div>
+                </div>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">✈️</div>
+                        <div class="feature-content">
+                            <h4>航班与交通</h4>
+                            <p>直飞较少，通常需昆明转机，往返约1500-3000元。京沪双城协调同时间到达需花点心思对齐中转航班。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">💆‍♀️</div>
+                        <div class="feature-content">
+                            <h4>疲劳指数：中等</h4>
+                            <p>景点间有一定距离，包车/打车为主，但整体节奏慢，不会像特种兵一样赶景点。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">👗</div>
+                        <div class="feature-content">
+                            <h4>小裙子适宜度：良好</h4>
+                            <p>芒市较热适合夏装小裙子；但腾冲非常凉快(20℃左右)，早晚可能需要加件薄外套搭配。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">📷</div>
+                        <div class="feature-content">
+                            <h4>拍照与穿搭</h4>
+                            <p>芒市大金塔适合东南亚风情长裙/傣族服饰；腾冲和顺古镇适合新中式、棉麻材质的文艺穿搭。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 5: 贵州 -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h2 class="destination-name">贵州 (贵阳/荔波/西江)</h2>
+                        <div class="destination-tags">
+                            <span class="tag">自然山水</span>
+                            <span class="tag">民族特色</span>
+                        </div>
+                    </div>
+                    <div class="recommendation">🌟🌟🌟</div>
+                </div>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">✈️</div>
+                        <div class="feature-content">
+                            <h4>航班与交通</h4>
+                            <p>飞贵阳班次极多，价格便宜(往返800-1500元)，京沪协调时间极度容易。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">💆‍♀️</div>
+                        <div class="feature-content">
+                            <h4>疲劳指数：较累</h4>
+                            <p>贵州景点间车程长，且大量景区(黄果树、小七孔)需要爬山涉水，体力消耗大。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">👗</div>
+                        <div class="feature-content">
+                            <h4>小裙子适宜度：一般</h4>
+                            <p>白天景区爬山不方便穿裙子，容易走光或被蚊虫叮咬；只有在苗寨等住宿地拍照时才适合换装。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">📷</div>
+                        <div class="feature-content">
+                            <h4>拍照与穿搭</h4>
+                            <p>西江千户苗寨必拍绝美苗服写真；白天景区游览只能穿运动装或冲锋衣。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 6: 张家界+长沙 -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h2 class="destination-name">张家界 + 长沙</h2>
+                        <div class="destination-tags">
+                            <span class="tag">奇山异水</span>
+                            <span class="tag">吃货天堂</span>
+                        </div>
+                    </div>
+                    <div class="recommendation">🌟🌟</div>
+                </div>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">✈️</div>
+                        <div class="feature-content">
+                            <h4>航班与交通</h4>
+                            <p>飞长沙或高铁均极其方便，往返约800-1500元。双城协调完全没问题。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">💆‍♀️</div>
+                        <div class="feature-content">
+                            <h4>疲劳指数：极度疲惫</h4>
+                            <p>张家界是纯纯的特种兵爬山行程；长沙天气炎热、人多，网红店吃饭需要大量时间排队。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">👗</div>
+                        <div class="feature-content">
+                            <h4>小裙子适宜度：两极分化</h4>
+                            <p>长沙可以尽情穿小裙子；但张家界爬山绝对不适合穿裙子。</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">📷</div>
+                        <div class="feature-content">
+                            <h4>拍照与穿搭</h4>
+                            <p>长沙适合辣妹装、Y2K风、街头风；张家界只能全套运动装备/山系穿搭。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        
+        <div class="conclusion">
+            <h3>🤖 总结建议</h3>
+            <p>基于你们的四大需求：<strong>最推荐【泉州+潮州】或【清迈】</strong>。<br><br>
+            如果想<strong>绝对躺平、换上漂亮长裙拍大片</strong>，选【清迈】不会错；如果对<strong>传统文化和极致美食</strong>更感兴趣，想要体验簪花围，【泉州+潮州】是国内不二之选。<br>
+            张家界和贵州因为需要大量爬山，与“不累”和“小裙子”的需求冲突较大，建议以后安排专项旅行。</p>
+        </div>
+    </div>
+</body>
+
+</html>
